@@ -1,0 +1,23 @@
+[
+    { "_id": "A101", "title": "ReactJS Propulsion Assignment", "course": "RS101" },
+    { "_id": "A102", "title": "ReactJS Combustion Analysis", "course": "RS101" },
+    { "_id": "A103", "title": "ReactJS Nozzle Design Project", "course": "RS101" },
+    { "_id": "A201", "title": "Intro to AWS Aerodynamics Quiz", "course": "RS102" },
+    { "_id": "A202", "title": "Intro to AWS Flow Analysis", "course": "RS102" },
+    { "_id": "A203", "title": "Intro to AWS Heating Analysis", "course": "RS102" },
+    { "_id": "A301", "title": "Intro to PostgreSQL Structural Design Task", "course": "RS103" },
+    { "_id": "A302", "title": "Intro to PostgreSQL Orbital Calculations", "course": "RS103" },
+    { "_id": "A303", "title": "Intro to PostgreSQL Systems Engineering Exam", "course": "RS103" },
+    { "_id": "A101", "title": "HTML and CSS Propulsion Assignment", "course": "RS104" },
+    { "_id": "A102", "title": "HTML and CSS Combustion Analysis", "course": "RS104" },
+    { "_id": "A103", "title": "HTML and CSS Nozzle Design Project", "course": "RS104" },
+    { "_id": "A201", "title": "Python Development Aerodynamics Quiz", "course": "RS105" },
+    { "_id": "A202", "title": "Python Development Flow Analysis", "course": "RS105" },
+    { "_id": "A203", "title": "Python Development Heating Analysis", "course": "RS105" },
+    { "_id": "A301", "title": "SQL Crash Course Structural Design Task", "course": "RS106" },
+    { "_id": "A302", "title": "SQL Crash Course Orbital Calculations", "course": "RS106" },
+    { "_id": "A303", "title": "SQL Crash Course Systems Engineering Exam", "course": "RS106" },
+    { "_id": "A401", "title": "TypeScript Overview Propulsion Assignment", "course": "RS107" },
+    { "_id": "A402", "title": "TypeScript Overview Combustion Analysis", "course": "RS107" },
+    { "_id": "A403", "title": "TypeScript Overview Nozzle Design Project", "course": "RS107" }
+]

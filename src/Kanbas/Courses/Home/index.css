@@ -1,0 +1,9 @@
+.wd-flex-row-container {
+    display: flex;
+    flex-direction: row;
+    min-width: max-content;
+}
+
+.wd-flex-row-container .wd-right-container {
+    justify-content: end;
+}

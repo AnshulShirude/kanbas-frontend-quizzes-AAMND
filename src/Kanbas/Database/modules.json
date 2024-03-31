@@ -1,0 +1,549 @@
+[
+    {
+      "_id": "M101",
+      "name": "Introduction to ReactJS",
+      "description": "Learn the basic principles of ReactJS.",
+      "course": "RS101",
+      "lessons": [
+        {
+          "_id": "L101",
+          "name": "History of ReactJS",
+          "description": "A brief history of ReactJS and its evolution.",
+          "module": "M101"
+        },
+        {
+          "_id": "L102",
+          "name": "ReactJS Fundamentals",
+          "description": "Basic principles of ReactJS development.",
+          "module": "M101"
+        },
+        {
+          "_id": "L103",
+          "name": "React Components",
+          "description": "Understanding ReactJS component architecture.",
+          "module": "M101"
+        }
+      ]
+    },
+    {
+      "_id": "M102",
+      "name": "ReactJS Advanced",
+      "description": "Advanced topics in ReactJS development.",
+      "course": "RS101",
+      "lessons": [
+        {
+          "_id": "L104",
+          "name": "State Management",
+          "description": "Managing state in ReactJS applications.",
+          "module": "M102"
+        },
+        {
+          "_id": "L105",
+          "name": "Advanced Component Patterns",
+          "description": "Implementing advanced component patterns in ReactJS.",
+          "module": "M102"
+        },
+        {
+          "_id": "L106",
+          "name": "Performance Optimization",
+          "description": "Optimizing performance in ReactJS applications.",
+          "module": "M102"
+        }
+      ]
+    },
+    {
+      "_id": "M103",
+      "name": "ReactJS Projects",
+      "description": "Building real-world projects with ReactJS.",
+      "course": "RS101",
+      "lessons": [
+        {
+          "_id": "L107",
+          "name": "Project 1",
+          "description": "Description of project 1 using ReactJS.",
+          "module": "M103"
+        },
+        {
+          "_id": "L108",
+          "name": "Project 2",
+          "description": "Description of project 2 using ReactJS.",
+          "module": "M103"
+        },
+        {
+          "_id": "L109",
+          "name": "Project 3",
+          "description": "Description of project 3 using ReactJS.",
+          "module": "M103"
+        }
+      ]
+    },
+    {
+      "_id": "M104",
+      "name": "Intro to AWS",
+      "description": "Get started with Amazon Web Services (AWS) cloud computing.",
+      "course": "RS102",
+      "lessons": [
+        {
+          "_id": "L201",
+          "name": "AWS Basics",
+          "description": "Overview of Amazon Web Services (AWS) and its core services.",
+          "module": "M104"
+        },
+        {
+          "_id": "L202",
+          "name": "AWS Infrastructure",
+          "description": "Understanding AWS infrastructure components.",
+          "module": "M104"
+        },
+        {
+          "_id": "L203",
+          "name": "AWS Deployment",
+          "description": "Deploying applications on AWS.",
+          "module": "M104"
+        }
+      ]
+    },
+    {
+      "_id": "M105",
+      "name": "AWS Advanced",
+      "description": "Advanced topics in Amazon Web Services (AWS).",
+      "course": "RS102",
+      "lessons": [
+        {
+          "_id": "L204",
+          "name": "Serverless Computing",
+          "description": "Understanding serverless computing on AWS.",
+          "module": "M105"
+        },
+        {
+          "_id": "L205",
+          "name": "Advanced Networking",
+          "description": "Networking features and configurations in AWS.",
+          "module": "M105"
+        },
+        {
+          "_id": "L206",
+          "name": "Security Best Practices",
+          "description": "Implementing security best practices on AWS.",
+          "module": "M105"
+        }
+      ]
+    },
+    {
+      "_id": "M106",
+      "name": "AWS Projects",
+      "description": "Building real-world projects with Amazon Web Services (AWS).",
+      "course": "RS102",
+      "lessons": [
+        {
+          "_id": "L207",
+          "name": "Project 1",
+          "description": "Description of project 1 using AWS services.",
+          "module": "M106"
+        },
+        {
+          "_id": "L208",
+          "name": "Project 2",
+          "description": "Description of project 2 using AWS services.",
+          "module": "M106"
+        },
+        {
+          "_id": "L209",
+          "name": "Project 3",
+          "description": "Description of project 3 using AWS services.",
+          "module": "M106"
+        }
+      ]
+    },
+    {
+        "_id": "M107",
+        "name": "Introduction to PostgreSQL",
+        "description": "Get started with PostgreSQL database management system.",
+        "course": "RS103",
+        "lessons": [
+          {
+            "_id": "L301",
+            "name": "PostgreSQL Basics",
+            "description": "Overview of PostgreSQL and basic SQL commands.",
+            "module": "M107"
+          },
+          {
+            "_id": "L302",
+            "name": "Database Design",
+            "description": "Understanding database design principles.",
+            "module": "M107"
+          },
+          {
+            "_id": "L303",
+            "name": "Data Manipulation",
+            "description": "Performing CRUD operations in PostgreSQL.",
+            "module": "M107"
+          }
+        ]
+      },
+      {
+        "_id": "M108",
+        "name": "PostgreSQL Advanced",
+        "description": "Advanced topics in PostgreSQL database management.",
+        "course": "RS103",
+        "lessons": [
+          {
+            "_id": "L304",
+            "name": "Indexes and Performance",
+            "description": "Optimizing performance using indexes in PostgreSQL.",
+            "module": "M108"
+          },
+          {
+            "_id": "L305",
+            "name": "Advanced Queries",
+            "description": "Writing complex queries in PostgreSQL.",
+            "module": "M108"
+          },
+          {
+            "_id": "L306",
+            "name": "Transactions and Concurrency",
+            "description": "Managing transactions and concurrency in PostgreSQL.",
+            "module": "M108"
+          }
+        ]
+      },
+      {
+        "_id": "M109",
+        "name": "PostgreSQL Projects",
+        "description": "Building real-world projects with PostgreSQL.",
+        "course": "RS103",
+        "lessons": [
+          {
+            "_id": "L307",
+            "name": "Project 1",
+            "description": "Description of project 1 using PostgreSQL.",
+            "module": "M109"
+          },
+          {
+            "_id": "L308",
+            "name": "Project 2",
+            "description": "Description of project 2 using PostgreSQL.",
+            "module": "M109"
+          },
+          {
+            "_id": "L309",
+            "name": "Project 3",
+            "description": "Description of project 3 using PostgreSQL.",
+            "module": "M109"
+          }
+        ]
+      },
+      {
+        "_id": "M110",
+        "name": "HTML Basics",
+        "description": "Learn the fundamentals of HTML (Hypertext Markup Language).",
+        "course": "RS104",
+        "lessons": [
+          {
+            "_id": "L401",
+            "name": "HTML Structure",
+            "description": "Understanding the basic structure of HTML documents.",
+            "module": "M110"
+          },
+          {
+            "_id": "L402",
+            "name": "HTML Elements",
+            "description": "Exploring common HTML elements and their usage.",
+            "module": "M110"
+          },
+          {
+            "_id": "L403",
+            "name": "HTML Forms",
+            "description": "Creating forms in HTML for user input.",
+            "module": "M110"
+          }
+        ]
+      },
+      {
+        "_id": "M111",
+        "name": "CSS Basics",
+        "description": "Learn the fundamentals of CSS (Cascading Style Sheets).",
+        "course": "RS104",
+        "lessons": [
+          {
+            "_id": "L404",
+            "name": "CSS Syntax",
+            "description": "Understanding the syntax and structure of CSS rules.",
+            "module": "M111"
+          },
+          {
+            "_id": "L405",
+            "name": "CSS Selectors",
+            "description": "Exploring different types of CSS selectors.",
+            "module": "M111"
+          },
+          {
+            "_id": "L406",
+            "name": "CSS Layouts",
+            "description": "Creating layouts using CSS positioning and flexbox.",
+            "module": "M111"
+          }
+        ]
+      },
+      {
+        "_id": "M112",
+        "name": "HTML & CSS Projects",
+        "description": "Building real-world projects with HTML and CSS.",
+        "course": "RS104",
+        "lessons": [
+          {
+            "_id": "L407",
+            "name": "Project 1",
+            "description": "Description of project 1 using HTML and CSS.",
+            "module": "M112"
+          },
+          {
+            "_id": "L408",
+            "name": "Project 2",
+            "description": "Description of project 2 using HTML and CSS.",
+            "module": "M112"
+          },
+          {
+            "_id": "L409",
+            "name": "Project 3",
+            "description": "Description of project 3 using HTML and CSS.",
+            "module": "M112"
+          }
+        ]
+      },
+      {
+        "_id": "M113",
+        "name": "Python Basics",
+        "description": "Introduction to Python programming language.",
+        "course": "RS105",
+        "lessons": [
+          {
+            "_id": "L501",
+            "name": "Python Syntax",
+            "description": "Understanding the basic syntax of Python.",
+            "module": "M113"
+          },
+          {
+            "_id": "L502",
+            "name": "Data Types and Variables",
+            "description": "Exploring different data types and variables in Python.",
+            "module": "M113"
+          },
+          {
+            "_id": "L503",
+            "name": "Control Flow",
+            "description": "Understanding control flow statements in Python.",
+            "module": "M113"
+          }
+        ]
+      },
+      {
+        "_id": "M114",
+        "name": "Python Intermediate",
+        "description": "Intermediate concepts in Python programming.",
+        "course": "RS105",
+        "lessons": [
+          {
+            "_id": "L504",
+            "name": "Functions",
+            "description": "Creating and using functions in Python.",
+            "module": "M114"
+          },
+          {
+            "_id": "L505",
+            "name": "Data Structures",
+            "description": "Working with data structures like lists, tuples, and dictionaries.",
+            "module": "M114"
+          },
+          {
+            "_id": "L506",
+            "name": "File Handling",
+            "description": "Reading from and writing to files in Python.",
+            "module": "M114"
+          }
+        ]
+      },
+      {
+        "_id": "M115",
+        "name": "Python Projects",
+        "description": "Building real-world projects with Python.",
+        "course": "RS105",
+        "lessons": [
+          {
+            "_id": "L507",
+            "name": "Project 1",
+            "description": "Description of project 1 using Python.",
+            "module": "M115"
+          },
+          {
+            "_id": "L508",
+            "name": "Project 2",
+            "description": "Description of project 2 using Python.",
+            "module": "M115"
+          },
+          {
+            "_id": "L509",
+            "name": "Project 3",
+            "description": "Description of project 3 using Python.",
+            "module": "M115"
+          }
+        ]
+      },
+      {
+        "_id": "M116",
+        "name": "SQL Basics",
+        "description": "Introduction to Structured Query Language (SQL).",
+        "course": "RS106",
+        "lessons": [
+          {
+            "_id": "L601",
+            "name": "SQL Syntax",
+            "description": "Understanding the basic syntax of SQL queries.",
+            "module": "M116"
+          },
+          {
+            "_id": "L602",
+            "name": "Database Management",
+            "description": "Managing databases using SQL.",
+            "module": "M116"
+          },
+          {
+            "_id": "L603",
+            "name": "Query Optimization",
+            "description": "Optimizing SQL queries for performance.",
+            "module": "M116"
+          }
+        ]
+      },
+      {
+        "_id": "M117",
+        "name": "SQL Intermediate",
+        "description": "Intermediate concepts in SQL.",
+        "course": "RS106",
+        "lessons": [
+          {
+            "_id": "L604",
+            "name": "Joins and Subqueries",
+            "description": "Understanding joins and subqueries in SQL.",
+            "module": "M117"
+          },
+          {
+            "_id": "L605",
+            "name": "Data Modification",
+            "description": "Modifying data using SQL.",
+            "module": "M117"
+          },
+          {
+            "_id": "L606",
+            "name": "Views and Indexes",
+            "description": "Working with views and indexes in SQL.",
+            "module": "M117"
+          }
+        ]
+      },
+      {
+        "_id": "M118",
+        "name": "SQL Projects",
+        "description": "Building real-world projects with SQL.",
+        "course": "RS106",
+        "lessons": [
+          {
+            "_id": "L607",
+            "name": "Project 1",
+            "description": "Description of project 1 using SQL.",
+            "module": "M118"
+          },
+          {
+            "_id": "L608",
+            "name": "Project 2",
+            "description": "Description of project 2 using SQL.",
+            "module": "M118"
+          },
+          {
+            "_id": "L609",
+            "name": "Project 3",
+            "description": "Description of project 3 using SQL.",
+            "module": "M118"
+          }
+        ]
+      },
+      {
+        "_id": "M119",
+        "name": "TypeScript Basics",
+        "description": "Introduction to TypeScript programming language.",
+        "course": "RS107",
+        "lessons": [
+          {
+            "_id": "L701",
+            "name": "TypeScript Syntax",
+            "description": "Understanding the basic syntax of TypeScript.",
+            "module": "M119"
+          },
+          {
+            "_id": "L702",
+            "name": "Type System",
+            "description": "Exploring TypeScript's type system.",
+            "module": "M119"
+          },
+          {
+            "_id": "L703",
+            "name": "Interfaces and Classes",
+            "description": "Working with interfaces and classes in TypeScript.",
+            "module": "M119"
+          }
+        ]
+      },
+      {
+        "_id": "M120",
+        "name": "TypeScript Intermediate",
+        "description": "Intermediate concepts in TypeScript.",
+        "course": "RS107",
+        "lessons": [
+          {
+            "_id": "L704",
+            "name": "Advanced Types",
+            "description": "Understanding advanced types in TypeScript.",
+            "module": "M120"
+          },
+          {
+            "_id": "L705",
+            "name": "Generics",
+            "description": "Working with generics in TypeScript.",
+            "module": "M120"
+          },
+          {
+            "_id": "L706",
+            "name": "Modules and Namespaces",
+            "description": "Organizing code using modules and namespaces in TypeScript.",
+            "module": "M120"
+          }
+        ]
+      },
+      {
+        "_id": "M121",
+        "name": "TypeScript Projects",
+        "description": "Building real-world projects with TypeScript.",
+        "course": "RS107",
+        "lessons": [
+          {
+            "_id": "L707",
+            "name": "Project 1",
+            "description": "Description of project 1 using TypeScript.",
+            "module": "M121"
+          },
+          {
+            "_id": "L708",
+            "name": "Project 2",
+            "description": "Description of project 2 using TypeScript.",
+            "module": "M121"
+          },
+          {
+            "_id": "L709",
+            "name": "Project 3",
+            "description": "Description of project 3 using TypeScript.",
+            "module": "M121"
+          }
+        ]
+      }
+  ]
+  
