@@ -1,13 +1,20 @@
-import { FaCheckCircle, FaEllipsisV, FaPlusCircle, FaTimesCircle } from "react-icons/fa";
+import { FaCheckCircle, FaEllipsisV, FaPlusCircle, FaSpaceShuttle, FaTimesCircle } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import { db } from "../../Database/index";
 import ContextMenu from "./ContextMenu";
+import React, { useState } from "react";
+
+
 
 function QuizListScreen() {
+  const [showPopup, setShowPopup] = useState(false);
   const { courseId } = useParams();
   const assignmentList = db.assignments.filter(
     (assignment) => assignment.course === courseId
   );
+  const handleOpenPopup = () => {
+    setShowPopup(!showPopup);
+  };
   return (
     <>
       <div className="input-group mb-3">
@@ -40,7 +47,7 @@ function QuizListScreen() {
           <ul className="list-group">
             {assignmentList.map((assignment) => (
               <li className="list-group-item">
-                <i className="fa fa-space-shuttle" />{" "}
+                <FaSpaceShuttle className="text-success"/>
                 <Link
                   style={{
                     color: "black",
@@ -67,13 +74,16 @@ function QuizListScreen() {
                 </Link>
 
                 
-                {/* TODO: Make this a ternary based off of if you click it or change the status (look at requirements) */}
+                {showPopup &&
                 <ContextMenu />
+                }
 
                 <span className="float-end">
                     {/* TODO: Make this a ternary based off of the graded status */}
                     {true ? <FaCheckCircle className="text-success" /> : <FaTimesCircle className="text-danger" />}
-                  <FaEllipsisV className="ms-2" />
+                  <div onClick={handleOpenPopup} className="ms-2">
+                  <FaEllipsisV/>
+                  </div>
                 </span>
               </li>
             ))}

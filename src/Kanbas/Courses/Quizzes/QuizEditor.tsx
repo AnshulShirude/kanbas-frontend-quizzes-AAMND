@@ -28,13 +28,6 @@ const QuizEditor = () => {
     <div>
       <ul className="list-group wd-modules">
         <li className="list-group-item">
-          <button
-            type="button"
-            className="btn btn-success"
-            onClick={handleSaveChanges}
-          >
-            Save
-          </button>
           <input
             id="title2"
             type="text"
@@ -182,6 +175,13 @@ const QuizEditor = () => {
               }
             />
           </div>
+          <button
+            type="button"
+            className="btn btn-success"
+            onClick={handleSaveChanges}
+          >
+            Save
+          </button>
         </li>
       </ul>
     </div>
