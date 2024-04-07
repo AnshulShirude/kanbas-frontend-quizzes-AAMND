@@ -11,43 +11,43 @@ import { FaEllipsisV, FaCheckCircle, FaPlusCircle } from "react-icons/fa";
 import { useParams } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  addModule,
-  deleteModule,
-  updateModule,
-  setModule,
-  setModules,
+  addQuiz,
+  deleteQuiz,
+  updateQuiz,
+  setQuiz,
+  setQuizzes,
 } from "./reducer";
 import * as client from "./client";
 import { KanbasState } from "../../store";
-import { findModulesForCourse, createModule } from "./client";
+import { findQuizzesForCourse } from "./client";
 
 function QuizzesList() {
   const { courseId } = useParams<{ courseId: string }>();
   useEffect(() => {
-    findModulesForCourse(courseId).then((modules) =>
-      dispatch(setModules(modules))
+    findQuizzesForCourse(courseId).then((quizzes) =>
+      dispatch(setQuizzes(quizzes))
     );
   }, [courseId]);
-  const moduleList = useSelector(
-    (state: KanbasState) => state.modulesReducer.modules
+  const quizList = useSelector(
+    (state: KanbasState) => state.quizzesReducer.quizzes
   );
-  const module = useSelector(
-    (state: KanbasState) => state.modulesReducer.module
+  const quiz = useSelector(
+    (state: KanbasState) => state.quizzesReducer.quiz
   );
   const dispatch = useDispatch();
-  const handleAddModule = () => {
-    createModule(courseId, module).then((module) => {
-      dispatch(addModule(module));
+  const handleAddQuiz = () => {
+    client.createQuiz(courseId, quiz).then((quiz) => {
+      dispatch(addQuiz(quiz));
     });
   };
-  const handleDeleteModule = (moduleId: string) => {
-    client.deleteModule(moduleId).then((status) => {
-      dispatch(deleteModule(moduleId));
+  const handleDeleteQuiz = (quizId: string) => {
+    client.deleteQuiz(quizId).then((status) => {
+      dispatch(deleteQuiz(quizId));
     });
   };
-  const handleUpdateModule = async () => {
-    const status = await client.updateModule(module);
-    dispatch(updateModule(module));
+  const handleUpdateQuiz = async () => {
+    const status = await client.updateQuiz(quiz);
+    dispatch(updateQuiz(quiz));
   };
 
   return (

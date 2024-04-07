@@ -1,51 +1,51 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface Module {
+interface Quiz {
   _id: string;
-  name: string;
+  title: string;
   description: string;
 }
 
-interface ModulesState {
-  modules: Module[];
-  module: Module;
+interface QuizzesState {
+  quizzes: Quiz[];
+  quiz: Quiz;
 }
 
-const initialState: ModulesState = {
-  modules: [],
-  module: { _id: "", name: "New Module 123", description: "New Description" },
+const initialState: QuizzesState = {
+  quizzes: [],
+  quiz: { _id: "", title: "New Quiz 123", description: "New Description" },
 };
 
-const modulesSlice = createSlice({
-  name: "modules",
+const quizSlice = createSlice({
+  name: "quizzes",
   initialState,
   reducers: {
-    addModule: (state, action) => {
-      state.modules = [action.payload, ...state.modules];
+    addQuiz: (state, action) => {
+      state.quizzes = [action.payload, ...state.quizzes];
     },
-    setModules: (state, action: PayloadAction<Module[]>) => {
-      state.modules = action.payload;
+    setQuizzes: (state, action: PayloadAction<Quiz[]>) => {
+      state.quizzes = action.payload;
     },
-    deleteModule: (state, action: PayloadAction<string>) => {
-      state.modules = state.modules.filter(
-        (module) => module._id !== action.payload
+    deleteQuiz: (state, action: PayloadAction<string>) => {
+      state.quizzes = state.quizzes.filter(
+        (quiz) => quiz._id !== action.payload
       );
     },
-    updateModule: (state, action: PayloadAction<Module>) => {
-      state.modules = state.modules.map((module) => {
-        if (module._id === action.payload._id) {
+    updateQuiz: (state, action: PayloadAction<Quiz>) => {
+      state.quizzes = state.quizzes.map((quiz) => {
+        if (quiz._id === action.payload._id) {
           return action.payload;
         } else {
-          return module;
+          return quiz;
         }
       });
     },
-    setModule: (state, action: PayloadAction<Module>) => {
-      state.module = action.payload;
+    setQuiz: (state, action: PayloadAction<Quiz>) => {
+      state.quiz = action.payload;
     },
   },
 });
 
-export const { addModule, deleteModule, updateModule, setModule, setModules } =
-  modulesSlice.actions;
-export default modulesSlice.reducer;
+export const { addQuiz, deleteQuiz, updateQuiz, setQuiz, setQuizzes } =
+  quizSlice.actions;
+export default quizSlice.reducer;
