@@ -2,16 +2,49 @@ import { FaCheckCircle, FaEllipsisV, FaPlusCircle, FaSpaceShuttle, FaTimesCircle
 import { Link, useParams } from "react-router-dom";
 import { db } from "../../Database/index";
 import ContextMenu from "./ContextMenu";
-import React, { useState } from "react";
-
+import React, {useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  addQuiz,
+  deleteQuiz,
+  updateQuiz,
+  setQuiz,
+  setQuizzes,
+} from "./reducer";
+import * as client from "./client";
+import { KanbasState } from "../../store";
+import { findQuizzesForCourse } from "./client";
 
 
 function QuizListScreen() {
   const [showPopup, setShowPopup] = useState(false);
   const { courseId } = useParams();
-  const assignmentList = db.assignments.filter(
-    (assignment) => assignment.course === courseId
+  useEffect(() => {
+    findQuizzesForCourse(courseId).then((quizzes) =>
+      dispatch(setQuizzes(quizzes))
+    );
+  }, [courseId]);
+  const quizList = useSelector(
+    (state: KanbasState) => state.quizzesReducer.quizzes
   );
+  const quiz = useSelector(
+    (state: KanbasState) => state.quizzesReducer.quiz
+  );
+  const dispatch = useDispatch();
+  const handleAddQuiz = () => {
+    client.createQuiz(courseId, quiz).then((quiz) => {
+      dispatch(addQuiz(quiz));
+    });
+  };
+  const handleDeleteQuiz = (quizId: string) => {
+    client.deleteQuiz(quizId).then((status) => {
+      dispatch(deleteQuiz(quizId));
+    });
+  };
+  const handleUpdateQuiz = async () => {
+    const status = await client.updateQuiz(quiz);
+    dispatch(updateQuiz(quiz));
+  };
   const handleOpenPopup = () => {
     setShowPopup(!showPopup);
   };
@@ -45,7 +78,7 @@ function QuizListScreen() {
             </span>
           </div>
           <ul className="list-group">
-            {assignmentList.map((assignment) => (
+            {quizList.map((quiz) => (
               <li className="list-group-item">
                 <FaSpaceShuttle className="text-success"/>
                 <Link
@@ -54,9 +87,9 @@ function QuizListScreen() {
                     textDecoration: "none",
                     fontSize: "17px",
                   }}
-                  to={`/Kanbas/Courses/${courseId}/Assignments/${assignment._id}`}
+                  to={`/Kanbas/Courses/${courseId}/Assignments/${quiz._id}`}
                 >
-                  {assignment.title}
+                  {quiz.title}
                   <br />
                   <span
                     style={{

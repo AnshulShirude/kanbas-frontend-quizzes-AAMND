@@ -1,25 +1,25 @@
 import axios from "axios";
 const COURSES_API = "http://localhost:4000/api/courses";
-const MODULES_API = "http://localhost:4000/api/modules";
-export const updateModule = async (module : any) => {
+const QUIZZES_API = "http://localhost:4000/api/quizzes";
+export const updateQuiz = async (quiz : any) => {
   const response = await axios.
-    put(`${MODULES_API}/${module._id}`, module);
+    put(`${QUIZZES_API}/${quiz._id}`, quiz);
   return response.data;
 };
-export const deleteModule = async (moduleId : string) => {
+export const deleteQuiz = async (quizId : string) => {
   const response = await axios
-    .delete(`${MODULES_API}/${moduleId}`);
+    .delete(`${QUIZZES_API}/${quizId}`);
   return response.data;
 };
-export const createModule = async (courseId: any, module : any) => {
+export const createQuiz = async (courseId: any, quiz : any) => {
   const response = await axios.post(
-    `${COURSES_API}/${courseId}/modules`,
-    module
+    `${COURSES_API}/${courseId}/quizzes`,
+    quiz
   );
   return response.data;
 };
-export const findModulesForCourse = async (courseId: any) => {
+export const findQuizzesForCourse = async (courseId: any) => {
   const response = await axios
-    .get(`${COURSES_API}/${courseId}/modules`);
+    .get(`${COURSES_API}/${courseId}/quizzes`);
   return response.data;
 };
