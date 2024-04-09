@@ -43,9 +43,18 @@ const quizSlice = createSlice({
     setQuiz: (state, action: PayloadAction<Quiz>) => {
       state.quiz = action.payload;
     },
+    publishQuiz: (state, action: PayloadAction<string>) => {
+      state.quizzes = state.quizzes.map((quiz) => {
+        if (quiz._id === action.payload) {
+          return { ...quiz, published: true };
+        } else {
+          return quiz;
+        }
+      });
+    }
   },
 });
 
-export const { addQuiz, deleteQuiz, updateQuiz, setQuiz, setQuizzes } =
+export const { addQuiz, deleteQuiz, updateQuiz, setQuiz, setQuizzes, publishQuiz } =
   quizSlice.actions;
 export default quizSlice.reducer;

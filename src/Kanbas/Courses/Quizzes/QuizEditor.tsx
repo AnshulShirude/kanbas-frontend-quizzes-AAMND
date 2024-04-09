@@ -18,6 +18,7 @@ const QuizEditor = () => {
     DueDate: "",
     AvailableDate: "",
     UntilDate: "",
+    published: false,
   });
 
   const handleSaveChanges = () => {
