@@ -22,67 +22,69 @@ function QuizDetails(props: QuizDetailsProps) {
   }, [courseId]);
 
   const { quizId } = props;
+  console.log(quizId);
   const quizList = useSelector(
     (state: KanbasState) => state.quizzesReducer.quizzes
   );
+  console.log(quizList);
   const quiz = quizList.find((quiz) => quiz._id === quizId);
   return (
     <>
       <div>
-        <h1>{quiz.title}</h1>
+        <h1>{quiz?.title}</h1>
         <ul className="list-group">
           <li>
             <strong>Quiz Type: </strong>
-            {quiz.quizType}
+            {quiz?.quizType}
           </li>
           <li>
             <strong>Points: </strong>
-            {quiz.points}
+            {quiz?.points}
           </li>
           <li>
             <strong>Assignment Group: </strong>
-            {quiz.assignmentGroup}
+            {quiz?.assignmentGroup}
           </li>
           <li>
             <strong>Shuffle Answers: </strong>
-            {quiz.shuffleAnswers}
+            {quiz?.shuffleAnswers}
           </li>
           <li>
             <strong>Time Limit: </strong>
-            {quiz.timeLimit}
+            {quiz?.timeLimit}
           </li>
           <li>
             <strong>Multiple Attempts: </strong>
-            {quiz.multipleAttempts}
+            {quiz?.multipleAttempts}
           </li>
           <li>
             <strong>View Responses: </strong>
-            {quiz.viewResponses}
+            {quiz?.viewResponses}
           </li>
           <li>
             <strong>Show Correct Answers: </strong>
-            {quiz.showCorrectAnswers}
+            {quiz?.showCorrectAnswers}
           </li>
           <li>
             <strong>One Question at a Time: </strong>
-            {quiz.oneQuestionAtATime ? "Yes" : "No"}
+            {quiz?.oneQuestionAtATime ? "Yes" : "No"}
           </li>
           <li>
             <strong>Require Respondus Lockdown Browser: </strong>
-            {quiz.lockdownRequired ? "Yes" : "No"}
+            {quiz?.lockdownRequired ? "Yes" : "No"}
           </li>
           <li>
             <strong>Required to View Quiz Results: </strong>
-            {quiz.viewQuizResults ? "Yes" : "No"}
+            {quiz?.viewQuizResults ? "Yes" : "No"}
           </li>
 
           <li>
             <strong>Webcam Required: </strong>
-            {quiz.webcamRequired ? "Yes" : "No"}
+            {quiz?.webcamRequired ? "Yes" : "No"}
           </li>
           <li>
             <strong>Lock Questions After Answering: </strong>
-            {quiz.lockQuestionsAfterAnswering ? "Yes" : "No"}
+            {quiz?.lockQuestionsAfterAnswering ? "Yes" : "No"}
           </li>
         </ul>
 
@@ -102,10 +104,10 @@ function QuizDetails(props: QuizDetailsProps) {
         </div>
         <hr />
         <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-          <div>{quiz.dueDate}</div>
-          <div>{quiz.for}</div>
-          <div>{quiz.availableDate}</div>
-          <div>{quiz.untilDate}</div>
+          <div>{quiz?.dueDate}</div>
+          <div>{quiz?.for}</div>
+          <div>{quiz?.availableDate}</div>
+          <div>{quiz?.untilDate}</div>
         </div>
         <hr />
       </div>
