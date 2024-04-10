@@ -61,6 +61,7 @@ function QuizListScreen() {
 
   return (
     <>
+    {console.log(quizList)}
       <div className="input-group mb-3">
         <input
           style={{ width: "100px" }}

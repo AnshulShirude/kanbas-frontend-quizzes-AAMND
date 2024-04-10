@@ -9,7 +9,7 @@ function Quizzes() {
       <div style={{ marginTop: "20px" }} />
       <QuizListScreen />
       <QuizzesList />
-      <QuizDetails />
+      <QuizDetails quizId="1000" />
       <QuizEditor />
     </>
   );
