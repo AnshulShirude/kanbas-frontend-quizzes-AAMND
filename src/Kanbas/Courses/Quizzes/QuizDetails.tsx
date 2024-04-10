@@ -1,35 +1,50 @@
-
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  setQuizzes,
-} from "./reducer";
+import { setQuizzes } from "./reducer";
 import { KanbasState } from "../../store";
 import { findQuizzesForCourse } from "./client";
+import { FaEllipsisV } from "react-icons/fa";
 
-interface QuizDetailsProps {
-  quizId: string;
-}
-
-function QuizDetails(props: QuizDetailsProps) {
+function QuizDetails() {
   const dispatch = useDispatch();
   const { courseId } = useParams();
+  const { quizId } = useParams();
   useEffect(() => {
     findQuizzesForCourse(courseId).then((quizzes) =>
       dispatch(setQuizzes(quizzes))
     );
   }, [courseId]);
 
-  const { quizId } = props;
-  console.log(quizId);
   const quizList = useSelector(
     (state: KanbasState) => state.quizzesReducer.quizzes
   );
-  console.log(quizList);
   const quiz = quizList.find((quiz) => quiz._id === quizId);
   return (
     <>
+      <div
+        className="btn-group"
+        style={{ display: "flex", justifyContent: "flex-end" }}
+      >
+        <button
+          type="button"
+          className="btn btn-success"
+          // onClick={() => handlePublish(quizId)}
+        >
+          <i className="fa fa-check" /> Published
+        </button>
+        <button type="button" className="btn btn-light">
+          Preview
+        </button>
+        <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz?._id}/Edit`}>
+          <button type="button" className="btn btn-danger">
+            <i className="fa fa-pencil" /> Edit
+          </button>
+        </Link>
+        <button type="button" className="btn btn-light">
+          <FaEllipsisV />
+        </button>
+      </div>
       <div>
         <h1>{quiz?.title}</h1>
         <ul className="list-group">
@@ -88,7 +103,13 @@ function QuizDetails(props: QuizDetailsProps) {
           </li>
         </ul>
 
-        <div style={{ display: "flex", justifyContent: "space-evenly", marginTop:"10px" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-evenly",
+            marginTop: "10px",
+          }}
+        >
           <div>
             <strong>Due</strong>
           </div>

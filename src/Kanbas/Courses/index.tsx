@@ -14,8 +14,11 @@ import Modules from "./Modules";
 import Home from "./Home";
 import Assignments from "./Assignments";
 import Quizzes from "./Quizzes";
+import QuizDetails from "./Quizzes/QuizDetails";
+import QuizEditor from "./Quizzes/QuizEditor";
 
 function Courses() {
+  const { quizId } = useParams();
   const { courseId } = useParams();
   const COURSES_API = "http://localhost:4000/api/courses";
   const [course, setCourse] = useState<any>({ _id: "" });
@@ -60,7 +63,9 @@ function Courses() {
               path="Assignments/:assignmentId"
               element={<h1>Assignment Editor</h1>}
             />
+            <Route path="Quizzes/:quizId/Edit" element={<QuizEditor />} />
             <Route path="Quizzes" element={<Quizzes />} />
+            <Route path="Quizzes/:quizId" element={<QuizDetails />} />
             <Route path="Grades" element={<h1>Grades</h1>} />
             <Route path="People" element={<h1>People</h1>} />
           </Routes>

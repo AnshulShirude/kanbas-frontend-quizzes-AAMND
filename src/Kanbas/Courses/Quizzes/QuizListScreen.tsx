@@ -22,6 +22,7 @@ import { KanbasState } from "../../store";
 import { findQuizzesForCourse } from "./client";
 import { publishQuiz } from "./reducer";
 import { format } from "date-fns";
+import QuizDetails from "./QuizDetails";
 
 function QuizListScreen() {
   const [openPopupId, setOpenPopupId] = useState<string | null>(null);
@@ -99,7 +100,7 @@ function QuizListScreen() {
                     textDecoration: "none",
                     fontSize: "17px",
                   }}
-                  to={`/Kanbas/Courses/${courseId}/Assignments/${quiz._id}`}
+                  to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}`}
                 >
                   {quiz.title}
                   <br />
