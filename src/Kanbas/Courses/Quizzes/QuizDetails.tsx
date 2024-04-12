@@ -22,10 +22,13 @@ function QuizDetails() {
     (state: KanbasState) => state.quizzesReducer.quizzes
   );
   const quiz = quizList.find((quiz) => quiz._id === quizId);
-  
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+     return dateString;
+    }
+
     const month = date.toLocaleString("default", { month: "short" });
     const day = date.getDate();
     let hours = date.getHours();
@@ -43,6 +46,7 @@ function QuizDetails() {
     }${minutes}${amPm}`;
     return formattedDate;
   };
+
   const handlePublish = (quizId: any) => {
     client.publishQuiz(quizId).then((status) => {
       dispatch(publishQuiz(quizId));

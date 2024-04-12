@@ -6,23 +6,14 @@ import {
   FaTimesCircle,
 } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
-import { db } from "../../Database/index";
-import ContextMenu from "./ContextMenu";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  addQuiz,
-  deleteQuiz,
-  updateQuiz,
-  setQuiz,
-  setQuizzes,
-} from "./reducer";
+import { addQuiz, deleteQuiz, updateQuiz, setQuizzes } from "./reducer";
 import * as client from "./client";
 import { KanbasState } from "../../store";
 import { findQuizzesForCourse } from "./client";
 import { publishQuiz } from "./reducer";
 import { format } from "date-fns";
-import QuizDetails from "./QuizDetails";
 
 function QuizListScreen() {
   const [openPopupId, setOpenPopupId] = useState<string | null>(null);
@@ -60,9 +51,46 @@ function QuizListScreen() {
     });
   };
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+     return dateString;
+    }
+
+    const month = date.toLocaleString("default", { month: "short" });
+    const day = date.getDate();
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const amPm = hours >= 12 ? "pm" : "am";
+
+    if (hours > 12) {
+      hours -= 12;
+    } else if (hours === 0) {
+      hours = 12;
+    }
+
+    const formattedDate = `${month} ${day} at ${hours}:${
+      minutes < 10 ? "0" : ""
+    }${minutes}${amPm}`;
+    return formattedDate;
+  };
+
+  const getAvailabilityStatus = (quiz: any) => {
+    const currentDate = new Date();
+    const availableDate = new Date(quiz.availableDate);
+    const untilDate = new Date(quiz.untilDate);
+
+    if (currentDate > untilDate) {
+      return "Closed";
+    } else if (currentDate >= availableDate && currentDate <= untilDate) {
+      return "Available";
+    } else if (currentDate < availableDate) {
+      return `Not available until ${formatDate(quiz.availableDate)}`;
+    }
+  };
+
   return (
     <>
-    {console.log(quizList)}
       <div className="input-group mb-3">
         <input
           style={{ width: "100px" }}
@@ -70,7 +98,11 @@ function QuizListScreen() {
           className="form-control"
           placeholder="Search for Quiz"
         />
-        <button type="button" className="btn btn-danger">
+        <button
+          type="button"
+          className="btn btn-danger"
+          onClick={handleAddQuiz}
+        >
           <i className="fa-solid fa-plus"></i> Quiz
         </button>
 
@@ -110,7 +142,7 @@ function QuizListScreen() {
                       fontSize: "16px",
                     }}
                   >
-                    Closed
+                    {getAvailabilityStatus(quiz)}
                   </span>{" "}
                   |
                   <span style={{ color: "gray", fontSize: "16px" }}>
@@ -144,7 +176,7 @@ function QuizListScreen() {
                     <button
                       type="button"
                       className="btn btn-danger"
-                      onClick={handleDeleteQuiz}
+                      onClick={() => handleDeleteQuiz(quiz._id)}
                     >
                       Delete
                     </button>
