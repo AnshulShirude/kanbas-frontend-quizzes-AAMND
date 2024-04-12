@@ -5,6 +5,8 @@ import { setQuizzes } from "./reducer";
 import { KanbasState } from "../../store";
 import { findQuizzesForCourse } from "./client";
 import { FaEllipsisV } from "react-icons/fa";
+import * as client from "./client";
+import { publishQuiz } from "./reducer";
 
 function QuizDetails() {
   const dispatch = useDispatch();
@@ -20,6 +22,33 @@ function QuizDetails() {
     (state: KanbasState) => state.quizzesReducer.quizzes
   );
   const quiz = quizList.find((quiz) => quiz._id === quizId);
+  
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const month = date.toLocaleString("default", { month: "short" });
+    const day = date.getDate();
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const amPm = hours >= 12 ? "pm" : "am";
+
+    if (hours > 12) {
+      hours -= 12;
+    } else if (hours === 0) {
+      hours = 12;
+    }
+
+    const formattedDate = `${month} ${day} at ${hours}:${
+      minutes < 10 ? "0" : ""
+    }${minutes}${amPm}`;
+    return formattedDate;
+  };
+  const handlePublish = (quizId: any) => {
+    client.publishQuiz(quizId).then((status) => {
+      dispatch(publishQuiz(quizId));
+    });
+  };
+
   return (
     <>
       <div
@@ -29,7 +58,7 @@ function QuizDetails() {
         <button
           type="button"
           className="btn btn-success"
-          // onClick={() => handlePublish(quizId)}
+          onClick={() => handlePublish(quizId)}
         >
           <i className="fa fa-check" /> Published
         </button>
@@ -125,10 +154,10 @@ function QuizDetails() {
         </div>
         <hr />
         <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-          <div>{quiz?.dueDate}</div>
+          <div>{formatDate(quiz?.dueDate)}</div>
           <div>{quiz?.for}</div>
-          <div>{quiz?.availableDate}</div>
-          <div>{quiz?.untilDate}</div>
+          <div>{formatDate(quiz?.availableDate)}</div>
+          <div>{formatDate(quiz?.untilDate)}</div>
         </div>
         <hr />
       </div>
