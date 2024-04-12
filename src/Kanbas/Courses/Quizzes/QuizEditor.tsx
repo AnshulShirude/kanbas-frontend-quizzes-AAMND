@@ -30,7 +30,6 @@ const QuizEditor = () => {
   const handleSaveChanges = () => {
     // Code to save changes and navigate to Quiz Details screen
   };
-  
 
   const dispatch = useDispatch();
   const { courseId } = useParams();
@@ -44,10 +43,12 @@ const QuizEditor = () => {
   const quizList = useSelector(
     (state: KanbasState) => state.quizzesReducer.quizzes
   );
-  const quiz = quizList.find((quiz) => quiz._id === quizId);
-  const formattedDueDate = quiz.dueDate ? quiz.dueDate.split('T')[0] : '';
-  const formattedAvailableDate = quiz.availableDate ? quiz.availableDate.split('T')[0] : '';
-  const formattedUntilDate = quiz.untilDate ? quiz.untilDate.split('T')[0] : '';
+  const quiz = quizList.find((quiz) => quiz?._id === quizId);
+  const formattedDueDate = quiz?.dueDate ? quiz?.dueDate.split("T")[0] : "";
+  const formattedAvailableDate = quiz?.availableDate
+    ? quiz?.availableDate.split("T")[0]
+    : "";
+  const formattedUntilDate = quiz?.untilDate ? quiz?.untilDate.split("T")[0] : "";
   console.log(quizId);
   console.log(quiz);
 
@@ -197,9 +198,7 @@ const QuizEditor = () => {
               type="date"
               className="form-control"
               value={formattedUntilDate}
-              onChange={(e) =>
-                setQuiz({ ...quiz, UntilDate: e.target.value })
-              }
+              onChange={(e) => setQuiz({ ...quiz, UntilDate: e.target.value })}
             />
           </div>
           <button
