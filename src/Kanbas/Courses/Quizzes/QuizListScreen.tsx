@@ -13,7 +13,7 @@ import * as client from "./client";
 import { KanbasState } from "../../store";
 import { findQuizzesForCourse } from "./client";
 import { publishQuiz } from "./reducer";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 
 function QuizListScreen() {
   const [openPopupId, setOpenPopupId] = useState<string | null>(null);
@@ -28,8 +28,9 @@ function QuizListScreen() {
   );
   const quiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz);
   const dispatch = useDispatch();
+
   const handleAddQuiz = () => {
-    client.createQuiz(courseId, quiz).then((quiz) => {
+    client.createQuiz(courseId, quiz).then((courseId) => {
       dispatch(addQuiz(quiz));
     });
   };
@@ -49,6 +50,8 @@ function QuizListScreen() {
     client.publishQuiz(quizId).then((status) => {
       dispatch(publishQuiz(quizId));
     });
+    findQuizzesForCourse(courseId).then((quizzes) =>
+      dispatch(setQuizzes(quizzes)))
   };
 
   const formatDate = (dateString: string) => {
