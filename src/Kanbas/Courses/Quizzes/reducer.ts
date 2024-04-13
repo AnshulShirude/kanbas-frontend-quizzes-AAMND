@@ -3,7 +3,27 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface Quiz {
   _id: string;
   title: string;
+  course: string;
   description: string;
+  quizType: string;
+  points: Number;
+  assignmentGroup: string;
+  shuffleAnswers: boolean;
+  timeLimit: Number;
+  multipleAttempts: boolean;
+  showCorrectAnswers: boolean;
+  accessCode: string;
+  oneQuestionAtATime: boolean;
+  webcamRequired: boolean;
+  lockQuestionsAfterAnswering: boolean;
+  dueDate: string;
+  availableDate: string;
+  untilDate: string;
+  published: boolean;
+  viewResponses: string;
+  lockdownRequired: boolean;
+  viewQuizResults: boolean;
+  for: string;
 }
 
 interface QuizzesState {
@@ -13,7 +33,32 @@ interface QuizzesState {
 
 const initialState: QuizzesState = {
   quizzes: [],
-  quiz: { _id: "", title: "New Quiz 123", description: "New Description" },
+
+  quiz: {
+    _id: "",
+    title: "",
+    course: "",
+    description: "",
+    quizType: "Graded Quiz",
+    points: 100,
+    assignmentGroup: "Quizzes",
+    shuffleAnswers: true,
+    timeLimit: 20,
+    multipleAttempts: false,
+    showCorrectAnswers: false,
+    accessCode: "",
+    oneQuestionAtATime: true,
+    webcamRequired: false,
+    lockQuestionsAfterAnswering: false,
+    dueDate: "",
+    availableDate: "",
+    untilDate: "",
+    published: false,
+    viewResponses: "Always",
+    lockdownRequired: false,
+    viewQuizResults: true,
+    for: "Everyone",
+  },
 };
 
 const quizSlice = createSlice({
