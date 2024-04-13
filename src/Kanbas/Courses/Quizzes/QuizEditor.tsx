@@ -109,15 +109,15 @@ const QuizEditor = () => {
             />
             Shuffle Answers
           </label>
-          <input
-            type="number"
-            className="form-control"
-            placeholder="Time Limit"
-            value={quiz?.timeLimit}
-            onChange={(e) =>
-              setQuiz({ ...quiz, points: parseInt(e.target.value) })
-            }
-          />
+            <input
+              type="number"
+              className="form-control"
+              placeholder="Time Limit"
+              value={quiz?.timeLimit}
+              onChange={(e) =>
+                setQuiz({ ...quiz, timeLimit: parseInt(e.target.value) })
+              }
+            />
           <label>
             <input
               type="checkbox"
