@@ -1,7 +1,13 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setQuizzes } from "./reducer";
+import { KanbasState } from "../../store";
+import { findQuizzesForCourse } from "./client";
 
 const QuizEditor = () => {
-  const [quiz, setQuiz] = useState({
+  const [quiz1, setQuiz] = useState({
     Title: "",
     Description: "",
     QuizType: "Graded Quiz",
@@ -18,11 +24,33 @@ const QuizEditor = () => {
     DueDate: "",
     AvailableDate: "",
     UntilDate: "",
+    published: false,
   });
 
   const handleSaveChanges = () => {
     // Code to save changes and navigate to Quiz Details screen
   };
+
+  const dispatch = useDispatch();
+  const { courseId } = useParams();
+  const { quizId } = useParams();
+  useEffect(() => {
+    findQuizzesForCourse(courseId).then((quizzes) =>
+      dispatch(setQuizzes(quizzes))
+    );
+  }, [courseId]);
+
+  const quizList = useSelector(
+    (state: KanbasState) => state.quizzesReducer.quizzes
+  );
+  const quiz = quizList.find((quiz) => quiz?._id === quizId);
+  const formattedDueDate = quiz?.dueDate ? quiz?.dueDate.split("T")[0] : "";
+  const formattedAvailableDate = quiz?.availableDate
+    ? quiz?.availableDate.split("T")[0]
+    : "";
+  const formattedUntilDate = quiz?.untilDate ? quiz?.untilDate.split("T")[0] : "";
+  console.log(quizId);
+  console.log(quiz);
 
   return (
     <div>
@@ -33,18 +61,18 @@ const QuizEditor = () => {
             type="text"
             className="form-control"
             placeholder="Title"
-            value={quiz.Title}
+            value={quiz?.title}
             onChange={(e) => setQuiz({ ...quiz, Title: e.target.value })}
           />
           <textarea
             className="form-control"
             placeholder="Description"
-            value={quiz.Description}
+            value={quiz?.description}
             onChange={(e) => setQuiz({ ...quiz, Description: e.target.value })}
           />
           <select
             className="form-control"
-            value={quiz.QuizType}
+            value={quiz?.quizType}
             onChange={(e) => setQuiz({ ...quiz, QuizType: e.target.value })}
           >
             <option value="Graded Quiz">Graded Quiz</option>
@@ -54,7 +82,7 @@ const QuizEditor = () => {
           </select>
           <select
             className="form-control"
-            value={quiz.AssignmentGroup}
+            value={quiz?.assignmentGroup}
             onChange={(e) =>
               setQuiz({ ...quiz, AssignmentGroup: e.target.value })
             }
@@ -67,7 +95,7 @@ const QuizEditor = () => {
           <label>
             <input
               type="checkbox"
-              checked={quiz.ShuffleAnswers}
+              checked={quiz?.shuffleAnswers}
               onChange={(e) =>
                 setQuiz({ ...quiz, ShuffleAnswers: e.target.checked })
               }
@@ -78,7 +106,7 @@ const QuizEditor = () => {
             type="number"
             className="form-control"
             placeholder="Time Limit"
-            value={quiz.TimeLimit}
+            value={quiz?.timeLimit}
             onChange={(e) =>
               setQuiz({ ...quiz, Points: parseInt(e.target.value) })
             }
@@ -86,7 +114,7 @@ const QuizEditor = () => {
           <label>
             <input
               type="checkbox"
-              checked={quiz.MultipleAttempts}
+              checked={quiz?.multipleAttempts}
               onChange={(e) =>
                 setQuiz({ ...quiz, ShuffleAnswers: e.target.checked })
               }
@@ -96,7 +124,7 @@ const QuizEditor = () => {
           <label>
             <input
               type="checkbox"
-              checked={quiz.ShowCorrectAnswers}
+              checked={quiz?.showCorrectAnswers}
               onChange={(e) =>
                 setQuiz({ ...quiz, ShuffleAnswers: e.target.checked })
               }
@@ -106,7 +134,7 @@ const QuizEditor = () => {
           <label>
             <input
               type="checkbox"
-              checked={quiz.OneQuestionAtATime}
+              checked={quiz?.oneQuestionAtATime}
               onChange={(e) =>
                 setQuiz({ ...quiz, ShuffleAnswers: e.target.checked })
               }
@@ -116,7 +144,7 @@ const QuizEditor = () => {
           <label>
             <input
               type="checkbox"
-              checked={quiz.WebcamRequired}
+              checked={quiz?.webcamRequired}
               onChange={(e) =>
                 setQuiz({ ...quiz, ShuffleAnswers: e.target.checked })
               }
@@ -126,7 +154,7 @@ const QuizEditor = () => {
           <label>
             <input
               type="checkbox"
-              checked={quiz.LockQuestionsAfterAnswering}
+              checked={quiz?.lockQuestionsAfterAnswering}
               onChange={(e) =>
                 setQuiz({ ...quiz, ShuffleAnswers: e.target.checked })
               }
@@ -138,7 +166,7 @@ const QuizEditor = () => {
             type="text"
             className="form-control"
             placeholder="Access Code"
-            value={quiz.AccessCode}
+            value={quiz?.accessCode}
             onChange={(e) => setQuiz({ ...quiz, Title: e.target.value })}
           />
           <div>
@@ -147,7 +175,7 @@ const QuizEditor = () => {
               id="dueDate"
               type="date"
               className="form-control"
-              value={quiz.DueDate}
+              value={formattedDueDate}
               onChange={(e) => setQuiz({ ...quiz, DueDate: e.target.value })}
             />
           </div>
@@ -157,7 +185,7 @@ const QuizEditor = () => {
               id="availableDate"
               type="date"
               className="form-control"
-              value={quiz.AvailableDate}
+              value={formattedAvailableDate}
               onChange={(e) =>
                 setQuiz({ ...quiz, AvailableDate: e.target.value })
               }
@@ -169,10 +197,8 @@ const QuizEditor = () => {
               id="untilDate"
               type="date"
               className="form-control"
-              value={quiz.UntilDate}
-              onChange={(e) =>
-                setQuiz({ ...quiz, AvailableDate: e.target.value })
-              }
+              value={formattedUntilDate}
+              onChange={(e) => setQuiz({ ...quiz, UntilDate: e.target.value })}
             />
           </div>
           <button

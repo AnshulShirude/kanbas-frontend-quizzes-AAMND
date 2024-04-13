@@ -1,23 +1,22 @@
-import { FaCheckCircle, FaEllipsisV, FaPlusCircle, FaSpaceShuttle, FaTimesCircle } from "react-icons/fa";
-import { Link, useParams } from "react-router-dom";
-import { db } from "../../Database/index";
-import ContextMenu from "./ContextMenu";
-import React, {useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import {
-  addQuiz,
-  deleteQuiz,
-  updateQuiz,
-  setQuiz,
-  setQuizzes,
-} from "./reducer";
+  FaCheckCircle,
+  FaEllipsisV,
+  FaPlusCircle,
+  FaSpaceShuttle,
+  FaTimesCircle,
+} from "react-icons/fa";
+import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { addQuiz, deleteQuiz, updateQuiz, setQuizzes } from "./reducer";
 import * as client from "./client";
 import { KanbasState } from "../../store";
 import { findQuizzesForCourse } from "./client";
-
+import { publishQuiz } from "./reducer";
+import { format } from "date-fns";
 
 function QuizListScreen() {
-  const [showPopup, setShowPopup] = useState(false);
+  const [openPopupId, setOpenPopupId] = useState<string | null>(null);
   const { courseId } = useParams();
   useEffect(() => {
     findQuizzesForCourse(courseId).then((quizzes) =>
@@ -27,16 +26,14 @@ function QuizListScreen() {
   const quizList = useSelector(
     (state: KanbasState) => state.quizzesReducer.quizzes
   );
-  const quiz = useSelector(
-    (state: KanbasState) => state.quizzesReducer.quiz
-  );
+  const quiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz);
   const dispatch = useDispatch();
   const handleAddQuiz = () => {
     client.createQuiz(courseId, quiz).then((quiz) => {
       dispatch(addQuiz(quiz));
     });
   };
-  const handleDeleteQuiz = (quizId: string) => {
+  const handleDeleteQuiz = (quizId: any) => {
     client.deleteQuiz(quizId).then((status) => {
       dispatch(deleteQuiz(quizId));
     });
@@ -45,9 +42,53 @@ function QuizListScreen() {
     const status = await client.updateQuiz(quiz);
     dispatch(updateQuiz(quiz));
   };
-  const handleOpenPopup = () => {
-    setShowPopup(!showPopup);
+  const handleOpenPopup = (quizId: any) => {
+    setOpenPopupId(quizId === openPopupId ? null : quizId);
   };
+  const handlePublish = (quizId: any) => {
+    client.publishQuiz(quizId).then((status) => {
+      dispatch(publishQuiz(quizId));
+    });
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+     return dateString;
+    }
+
+    const month = date.toLocaleString("default", { month: "short" });
+    const day = date.getDate();
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const amPm = hours >= 12 ? "pm" : "am";
+
+    if (hours > 12) {
+      hours -= 12;
+    } else if (hours === 0) {
+      hours = 12;
+    }
+
+    const formattedDate = `${month} ${day} at ${hours}:${
+      minutes < 10 ? "0" : ""
+    }${minutes}${amPm}`;
+    return formattedDate;
+  };
+
+  const getAvailabilityStatus = (quiz: any) => {
+    const currentDate = new Date();
+    const availableDate = new Date(quiz.availableDate);
+    const untilDate = new Date(quiz.untilDate);
+
+    if (currentDate > untilDate) {
+      return "Closed";
+    } else if (currentDate >= availableDate && currentDate <= untilDate) {
+      return "Available";
+    } else if (currentDate < availableDate) {
+      return `Not available until ${formatDate(quiz.availableDate)}`;
+    }
+  };
+
   return (
     <>
       <div className="input-group mb-3">
@@ -57,7 +98,11 @@ function QuizListScreen() {
           className="form-control"
           placeholder="Search for Quiz"
         />
-        <button type="button" className="btn btn-danger">
+        <button
+          type="button"
+          className="btn btn-danger"
+          onClick={handleAddQuiz}
+        >
           <i className="fa-solid fa-plus"></i> Quiz
         </button>
 
@@ -80,14 +125,14 @@ function QuizListScreen() {
           <ul className="list-group">
             {quizList.map((quiz) => (
               <li className="list-group-item">
-                <FaSpaceShuttle className="text-success"/>
+                <FaSpaceShuttle className="text-success" />
                 <Link
                   style={{
                     color: "black",
                     textDecoration: "none",
                     fontSize: "17px",
                   }}
-                  to={`/Kanbas/Courses/${courseId}/Assignments/${quiz._id}`}
+                  to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}`}
                 >
                   {quiz.title}
                   <br />
@@ -97,25 +142,60 @@ function QuizListScreen() {
                       fontSize: "16px",
                     }}
                   >
-                    Closed
+                    {getAvailabilityStatus(quiz)}
                   </span>{" "}
                   |
                   <span style={{ color: "gray", fontSize: "16px" }}>
                     {" "}
-                    Due Sep 7 at 11:59pm | 100 pts | 6 Questions
+                    Due {format(
+                      new Date(quiz.dueDate),
+                      "MMM d 'at' h:mma"
+                    )} | {quiz.points} pts | 6 Questions
                   </span>
                 </Link>
 
-                
-                {showPopup &&
-                <ContextMenu />
-                }
+                {openPopupId === quiz._id && (
+                  <div className="btn-group">
+                    <button
+                      type="button"
+                      className="btn btn-success"
+                      onClick={() => handlePublish(quiz._id)}
+                    >
+                      <i className="fa fa-check" /> Published
+                    </button>
+                    <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz?._id}/Preview`}>
+                    <button type="button" className="btn btn-light">
+                      Preview
+                    </button>
+                    </Link>
+                    <button
+                      type="button"
+                      className="btn btn-light"
+                      onClick={handleUpdateQuiz}
+                    >
+                      <i className="fa fa-pencil" /> Edit
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={() => handleDeleteQuiz(quiz._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
 
                 <span className="float-end">
-                    {/* TODO: Make this a ternary based off of the graded status */}
-                    {true ? <FaCheckCircle className="text-success" /> : <FaTimesCircle className="text-danger" />}
-                  <div onClick={handleOpenPopup} className="ms-2">
-                  <FaEllipsisV/>
+                  {quiz.published ? (
+                    <FaCheckCircle className="text-success" />
+                  ) : (
+                    <FaTimesCircle className="text-danger" />
+                  )}
+                  <div
+                    onClick={() => handleOpenPopup(quiz._id)}
+                    className="ms-2"
+                  >
+                    <FaEllipsisV />
                   </div>
                 </span>
               </li>
