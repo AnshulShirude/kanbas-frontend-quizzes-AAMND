@@ -2,30 +2,19 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setQuizzes } from "./reducer";
 import { KanbasState } from "../../store";
 import { findQuizzesForCourse } from "./client";
+import {
+  addQuiz,
+  setQuizzes,
+  deleteQuiz,
+  updateQuiz,
+  setQuiz,
+  publishQuiz,
+} from "./reducer";
+import QuizEditorNav from "./QuizEditorNav";
 
-const QuizEditor = () => {
-  const [quiz1, setQuiz] = useState({
-    Title: "",
-    Description: "",
-    QuizType: "Graded Quiz",
-    Points: 0,
-    AssignmentGroup: "Quizzes",
-    ShuffleAnswers: true,
-    TimeLimit: 20,
-    MultipleAttempts: false,
-    ShowCorrectAnswers: false,
-    AccessCode: "",
-    OneQuestionAtATime: true,
-    WebcamRequired: false,
-    LockQuestionsAfterAnswering: false,
-    DueDate: "",
-    AvailableDate: "",
-    UntilDate: "",
-    published: false,
-  });
+function QuizEditor() {
 
   const handleSaveChanges = () => {
     // Code to save changes and navigate to Quiz Details screen
@@ -43,17 +32,21 @@ const QuizEditor = () => {
   const quizList = useSelector(
     (state: KanbasState) => state.quizzesReducer.quizzes
   );
-  const quiz = quizList.find((quiz) => quiz?._id === quizId);
+  let quiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz);
+  quiz = quizList.find((quiz) => quiz?._id === quizId);
   const formattedDueDate = quiz?.dueDate ? quiz?.dueDate.split("T")[0] : "";
   const formattedAvailableDate = quiz?.availableDate
     ? quiz?.availableDate.split("T")[0]
     : "";
-  const formattedUntilDate = quiz?.untilDate ? quiz?.untilDate.split("T")[0] : "";
+    const formattedUntilDate = quiz?.untilDate
+    ? quiz?.untilDate.split("T")[0]
+    : "";
   console.log(quizId);
   console.log(quiz);
 
   return (
     <div>
+      <QuizEditorNav/>
       <ul className="list-group wd-modules">
         <li className="list-group-item">
           <input
