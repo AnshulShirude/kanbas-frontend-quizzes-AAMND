@@ -66,9 +66,11 @@ function QuizDetails() {
         >
           <i className="fa fa-check" /> Published
         </button>
+        <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz?._id}/Preview`}>
         <button type="button" className="btn btn-light">
           Preview
         </button>
+        </Link>
         <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz?._id}/Edit`}>
           <button type="button" className="btn btn-danger">
             <i className="fa fa-pencil" /> Edit

@@ -163,9 +163,11 @@ function QuizListScreen() {
                     >
                       <i className="fa fa-check" /> Published
                     </button>
+                    <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz?._id}/Preview`}>
                     <button type="button" className="btn btn-light">
                       Preview
                     </button>
+                    </Link>
                     <button
                       type="button"
                       className="btn btn-light"
