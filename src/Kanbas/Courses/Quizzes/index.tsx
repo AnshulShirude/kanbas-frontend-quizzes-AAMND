@@ -11,6 +11,7 @@ function Quizzes() {
       <QuizzesList />
       <QuizDetails />
       <QuizEditor />
+      
     </>
   );
 }
