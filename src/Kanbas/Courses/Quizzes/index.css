@@ -56,3 +56,27 @@
 .line {
   margin-right: 100px;
 }
+
+.green-arrow {
+  color: green;
+}
+
+.green-outline {
+  border: 2px solid green;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.green-outline i {
+  color: green;
+}
+
+.red-outline {
+  border: 2px solid red;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.red-outline i {
+  color: red;
+}

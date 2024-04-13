@@ -1,6 +1,6 @@
 import QuizzesList from "./List";
-import QuizEditor from "./QuizEditor";
 import QuizListScreen from "./QuizListScreen";
+import QuizQuestionsEditor from "./QuizQuestionsEditor";
 
 function Quizzes() {
   return (
@@ -8,6 +8,7 @@ function Quizzes() {
       <div style={{ marginTop: "20px" }} />
       <QuizListScreen />
       <QuizzesList />
+      <QuizQuestionsEditor />
     </>
   );
 }
