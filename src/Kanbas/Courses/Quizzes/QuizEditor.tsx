@@ -11,12 +11,10 @@ import {
   updateQuiz,
   setQuiz,
   publishQuiz,
-
-
 } from "./reducer";
+import QuizEditorNav from "./QuizEditorNav";
 
-function QuizEditor () {
-  
+function QuizEditor() {
   const handleSaveChanges = () => {
     // Code to save changes and navigate to Quiz Details screen
   };
@@ -33,21 +31,21 @@ function QuizEditor () {
   const quizList = useSelector(
     (state: KanbasState) => state.quizzesReducer.quizzes
   );
-  let quiz = useSelector(
-    (state: KanbasState) => state.quizzesReducer.quiz
-  );
+  let quiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz);
   quiz = quizList.find((quiz) => quiz?._id === quizId);
   const formattedDueDate = quiz?.dueDate ? quiz?.dueDate.split("T")[0] : "";
   const formattedAvailableDate = quiz?.availableDate
     ? quiz?.availableDate.split("T")[0]
     : "";
-  const formattedUntilDate = quiz?.untilDate ? quiz?.untilDate.split("T")[0] : "";
+  const formattedUntilDate = quiz?.untilDate
+    ? quiz?.untilDate.split("T")[0]
+    : "";
   console.log(quizId);
   console.log(quiz);
 
-
   return (
     <div>
+      <QuizEditorNav />
       <ul className="list-group wd-modules">
         <li className="list-group-item">
           <input
@@ -206,6 +204,6 @@ function QuizEditor () {
       </ul>
     </div>
   );
-};
+}
 
 export default QuizEditor;

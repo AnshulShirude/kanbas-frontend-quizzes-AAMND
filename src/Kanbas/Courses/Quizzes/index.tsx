@@ -1,5 +1,4 @@
 import QuizzesList from "./List";
-import QuizEditor from "./QuizEditor";
 import QuizListScreen from "./QuizListScreen";
 
 function Quizzes() {
