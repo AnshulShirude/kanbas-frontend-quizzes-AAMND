@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import QuizEditorNav from "./QuizEditorNav";
 import QuizQuestionsEditor from "./QuizQuestionsEditor";
-const questions = [
+import { useState } from "react";
+const initialQuestions = [
   {
     id: "q1",
     type: "true_false",
@@ -43,6 +44,14 @@ const questions = [
 ];
 
 function QuizQuestions() {
+  const [questions, setQuestions] = useState(initialQuestions);
+  const [showEditor, setShowEditor] = useState(false);
+
+  // Add a new question
+  const handleAddNewQuestion = () => {
+    setShowEditor(true);
+  };
+
   // Renders the question and answer fields
   const renderQuestionFields = (question: any) => (
     <li key={question.id} className="list-group-item">
@@ -106,19 +115,24 @@ function QuizQuestions() {
     <>
       <QuizEditorNav />
       <div>
-        <ul className="list-group">{questions.map(renderQuestionFields)}</ul>
-
-        <div className="mt-3">
-            {/* <Link to={<QuizQuestionsEditor />}>  */}
-          <button
-            type="button"
-            className="btn btn-secondary"
-            // disabled={editing}
-          >
-            + New Question
-          </button>
-          {/* </Link> */}
-        </div>
+        {!showEditor ? (
+          <div>
+            <ul className="list-group">
+              {questions.map(renderQuestionFields)}
+            </ul>
+            <div className="mt-3">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={handleAddNewQuestion}
+              >
+                + New Question
+              </button>
+            </div>
+          </div>
+        ) : (
+          <QuizQuestionsEditor />
+        )}
 
         <div className="d-flex justify-content-end">
           <button
