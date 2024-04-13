@@ -71,7 +71,7 @@ function QuizDetails() {
           Preview
         </button>
         </Link>
-        <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz?._id}/Edit`}>
+        <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz?._id}/Edit/Details`}>
           <button type="button" className="btn btn-danger">
             <i className="fa fa-pencil" /> Edit
           </button>
