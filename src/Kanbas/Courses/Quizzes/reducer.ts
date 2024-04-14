@@ -35,6 +35,40 @@ const currentDate = new Date();
 const formattedCurrentDate = currentDate.toISOString().split("T")[0];
 const formattedDueDate = `${formattedCurrentDate}T23:59:59`;
 
+
+interface QuestionsState {
+  questions: Question[];
+  question: Question;
+}
+
+interface Question {
+  _id: string;
+  quizId: string;
+  questionType: string;
+  title: string
+  points: Number;
+  content: string;
+  answer: any;
+  options: any;
+  numOptions: Number;
+}
+
+const initialQuestionState: QuestionsState = {
+  questions: [],
+  question: {
+  _id: "2",
+  quizId: "1000",
+  questionType: "True/False",
+  title: "Question 2",
+  points: 1,
+  content: "The earth is flat",
+  answer: ["False"],
+  options: ["True", "False"],
+  numOptions: 2,
+  },
+};
+
+
 const initialState: QuizzesState = {
   quizzes: [],
 
