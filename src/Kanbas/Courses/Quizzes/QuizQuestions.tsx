@@ -1,64 +1,112 @@
 import { Link } from "react-router-dom";
 import QuizEditorNav from "./QuizEditorNav";
 import QuizQuestionsEditor from "./QuizQuestionsEditor";
-import { useState } from "react";
-const initialQuestions = [
-  {
-    id: "q1",
-    type: "true_false",
-    question: "The sky is blue.",
-    answer: true,
-  },
-  {
-    id: "q2",
-    type: "multiple_choice",
-    question: "Which of the following is a programming language?",
-    options: ["Python", "Snake", "Cobra", "Viper"],
-    answer: "Python",
-  },
-  {
-    id: "q3",
-    type: "fill_blank",
-    question: "________ is the capital of France.",
-    answer: "Paris",
-  },
-  {
-    id: "q4",
-    type: "multiple_choice",
-    question: "What is the result of 3 * 3?",
-    options: ["6", "9", "12", "15"],
-    answer: "9",
-  },
-  {
-    id: "q5",
-    type: "true_false",
-    question: "Humans can breathe underwater without any help.",
-    answer: false,
-  },
-  {
-    id: "q6",
-    type: "fill_blank",
-    question: "The chemical symbol for water is _______.",
-    answer: "H2O",
-  },
-];
+import {
+  JSXElementConstructor,
+  Key,
+  ReactElement,
+  ReactNode,
+  ReactPortal,
+  useEffect,
+  useState,
+} from "react";
+import { useParams } from "react-router";
+import { findQuizzesForCourse } from "./client";
+import { findQuestionsForQuiz } from "./Questions/client";
+
+
+interface Question {
+  _id: string;
+  quizId: string;
+  questionType: string;
+  title: string;
+  points: number;
+  content: string;
+  answer: string[];
+  options: string[];
+  numOptions: number;
+}
 
 function QuizQuestions() {
-  const [questions, setQuestions] = useState(initialQuestions);
+  const [questions, setQuestions] = useState<Question[]>([])
   const [showEditor, setShowEditor] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
+  const { quizId } = useParams();
+  const [questionList2, setQuestionList2] = useState([]);
+
+  const fetchQuestions = (quizId: any) => {
+    findQuestionsForQuiz(quizId)
+      .then((questionList) => {
+        if (questionList.length > 0) {
+          setQuestionList2(questionList);
+          setQuestions(questionList[0]);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching quiz questions:", error);
+      });
+  };
+
+  useEffect(() => {
+    fetchQuestions(quizId);
+  }, [quizId]);
 
   // Add a new question
   const handleAddNewQuestion = () => {
+     setCurrentQuestion({
+      _id: '', quizId: '1000', questionType: 'Multiple Choice',
+      title: '', points: 1, content: '', answer: [], options: [], numOptions: 0
+    });
     setShowEditor(true);
   };
 
+  const handleEditQuestion = (question : Question) => {
+    setCurrentQuestion(question); // Set the current question for editing
+    setShowEditor(true);
+  };
+
+  const handleSaveEditedQuestion = (editedQuestion : Question) => {
+    const method = editedQuestion._id ? 'PUT' : 'POST';
+    const endpoint = editedQuestion._id ? `/api/questions/${editedQuestion._id}` : `/api/quizzes/1000/questions`;
+
+    fetch(endpoint, {
+      method: method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(editedQuestion)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (!editedQuestion._id) { // New question
+        setQuestions(questions.concat(data));
+      } else { // Updated question
+        setQuestions(questions.map(q => q._id === data._id ? data : q));
+      }
+      setShowEditor(false);
+      setCurrentQuestion(null);
+    })
+    .catch(console.error);
+  };
+
+  const handleDeleteQuestion = (questionId: string) => {
+    fetch(`/api/questions/${questionId}`, { method: 'DELETE' })
+    .then(() => {
+      setQuestions(questions.filter(q => q._id !== questionId));
+    })
+    .catch(console.error);
+  };
+
+  const handleCancelEdit = () => {
+    setShowEditor(false);
+    setCurrentQuestion(null);
+  };
+
   // Renders the question and answer fields
-  const renderQuestionFields = (question: any) => (
-    <li key={question.id} className="list-group-item">
+  const renderQuestionFields = (question: Question) => (
+    <li key={question._id} className="list-group-item">
       <div>
-        <strong>Q:</strong> {question.question}
+        <strong>Q:</strong> {question.content}
         <div>
-          {question.type === "multiple_choice" && (
+          {question.questionType === "Multiple Choice" && (
             <div className="mt-2">
               <strong>Options:</strong>
               {question.options.map((option: any, index: any) => (
@@ -66,8 +114,8 @@ function QuizQuestions() {
                   <input
                     className="form-check-input"
                     type="radio"
-                    name={`option-${question.id}`}
-                    id={`option-${question.id}-${index}`}
+                    name={`option-${question._id}`}
+                    id={`option-${question._id}-${index}`}
                     value={option}
                     checked={question.answer === option}
                     onChange={() => {}}
@@ -75,7 +123,7 @@ function QuizQuestions() {
                   />
                   <label
                     className="form-check-label"
-                    htmlFor={`option-${question.id}-${index}`}
+                    htmlFor={`option-${question._id}-${index}`}
                   >
                     {option}
                   </label>
@@ -83,7 +131,7 @@ function QuizQuestions() {
               ))}
             </div>
           )}
-          {question.type === "true_false" && (
+          {question.questionType === "True/False" && (
             <div className="mt-2">
               <strong>Answer:</strong>
               <p className="form-control-plaintext">
@@ -91,7 +139,7 @@ function QuizQuestions() {
               </p>
             </div>
           )}
-          {question.type === "fill_blank" && (
+          {question.questionType === "Blank" && (
             <div className="mt-2">
               <strong>Answer:</strong>
               <p className="form-control-plaintext">{question.answer}</p>
@@ -103,11 +151,16 @@ function QuizQuestions() {
       <button
         type="button"
         className="btn btn-primary btn-sm"
-        onClick={() => {
-          /* logic to handle edit */
-        }}
+        onClick={() => handleEditQuestion(question)}
       >
         Edit
+      </button>
+
+      <button 
+      type="button" 
+      className="btn btn-danger btn-sm"
+       onClick={() => handleDeleteQuestion(question._id)}>
+        Delete
       </button>
     </li>
   );
@@ -118,7 +171,7 @@ function QuizQuestions() {
         {!showEditor ? (
           <div>
             <ul className="list-group">
-              {questions.map(renderQuestionFields)}
+              {questionList2.map(renderQuestionFields)}
             </ul>
             <div className="mt-3">
               <button
@@ -131,7 +184,10 @@ function QuizQuestions() {
             </div>
           </div>
         ) : (
-          <QuizQuestionsEditor />
+          <QuizQuestionsEditor
+          question={currentQuestion}
+          onCancel={handleCancelEdit}
+        />
         )}
 
         <div className="d-flex justify-content-end">

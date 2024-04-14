@@ -13,20 +13,210 @@ import { FaKeyboard } from "react-icons/fa";
 import { Box, Grid } from "@mui/material";
 import { FaLinkSlash } from "react-icons/fa6";
 import { PiArrowsOutSimpleLight } from "react-icons/pi";
+import { useState, useEffect } from "react";
 
-function QuizQuestionsEditor() {
+interface Question {
+  _id: string;
+  quizId: string;
+  questionType: string;
+  title: string;
+  points: number;
+  content: string;
+  answer: string[];
+  options: string[];
+  numOptions: number;
+}
+
+interface QuizQuestionsEditorProps {
+  question: Question | null;
+  onCancel: () => void;
+}
+
+
+const QuizQuestionsEditor: React.FC<QuizQuestionsEditorProps> = ({ question, onCancel }) => {
+  const [editedQuestion, setEditedQuestion] = useState<Question>(question || {
+    _id: '',
+    quizId: '',
+    questionType: 'Multiple Choice',
+    title: '',
+    points: 1,
+    content: '',
+    answer: [],
+    options: [],
+    numOptions: 0
+  });
+
+  useEffect(() => {
+    setEditedQuestion(question || {
+      _id: '',
+      quizId: '',
+      questionType: 'Multiple Choice',
+      title: '',
+      points: 1,
+      content: '',
+      answer: [],
+      options: [],
+      numOptions: 0
+    });
+  }, [question]);
+
+  const handleInputChange = (field: keyof Question, value: any) => {
+    setEditedQuestion(prev => ({ ...prev, [field]: value }));
+  };
+
+  const saveChanges = () => {
+    const method = editedQuestion._id ? 'PUT' : 'POST';
+    const endpoint = editedQuestion._id ? `/api/questions/${editedQuestion._id}` : `/api/quizzes/${editedQuestion.quizId}/questions`;
+
+    fetch(endpoint, {
+      method: method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(editedQuestion)
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+      onCancel(); // Close editor after save
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  };
+
+  const renderAnswerSection = () => {
+    switch (editedQuestion.questionType) {
+      case "Multiple Choice":
+        return (
+          <>
+            {editedQuestion.options.map((option, index) => (
+              <div key={index} style={{ display: "flex", alignItems: "center" }}>
+                <i className="fa-solid fa-arrow-right green-arrow"></i>
+                <h6 style={{ margin: "0 10px" }}>Option {index + 1}:</h6>
+                <input
+                  type="text"
+                  value={option}
+                  onChange={(e) => handleOptionChange(index, e.target.value)}
+                />
+                <input
+                  type="radio"
+                  checked={editedQuestion.answer.includes(option)}
+                  onChange={() => handleInputChange('answer', [option])}
+                />
+              </div>
+            ))}
+            <button onClick={addOption} style={{ marginTop: "20px", marginBottom: "20px" }}>
+              <i className="fa-solid fa-ellipsis"></i> Add Another Option
+            </button>
+          </>
+        );
+      case "True/False":
+        return (
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <i className="fa-solid fa-arrow-right green-arrow"></i>
+            <h6 style={{ margin: "0 10px" }}>Correct Answer:</h6>
+            <input
+              type="radio"
+              value="True"
+              checked={editedQuestion.answer[0] === "True"}
+              onChange={() => handleInputChange('answer', ["True"])}
+            /> True
+            <input
+              type="radio"
+              value="False"
+              checked={editedQuestion.answer[0] === "False"}
+              onChange={() => handleInputChange('answer', ["False"])}
+            /> False
+          </div>
+        );
+      case "Blank":
+        return (
+          <>
+            {Array.from({ length: editedQuestion.numOptions }, (_, k) => (
+              <div key={k} style={{ display: "flex", alignItems: "center" }}>
+                <i className="fa-solid fa-arrow-right green-arrow"></i>
+                <h6 style={{ margin: "0 10px" }}>Blank {k + 1}:</h6>
+                <input
+                  type="text"
+                  value={editedQuestion.answer[k] || ''}
+                  onChange={(e) => handleBlankChange(k, e.target.value)}
+                />
+              </div>
+            ))}
+            <button onClick={addBlank} style={{ marginTop: "20px", marginBottom: "20px" }}>
+              <i className="fa-solid fa-ellipsis"></i> Add Another Blank
+            </button>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+  
+  
+  const handleOptionChange = (index : any, value: any) => {
+    let newOptions = [...editedQuestion.options];
+    newOptions[index] = value;
+    setEditedQuestion({ ...editedQuestion, options: newOptions });
+  };
+  
+  const addOption = () => {
+    let newOptions = [...editedQuestion.options, ''];
+    setEditedQuestion({ ...editedQuestion, options: newOptions });
+  };
+  
+  const handleBlankChange = (index: any, value: any) => {
+    let newAnswers = [...editedQuestion.answer];
+    newAnswers[index] = value;
+    setEditedQuestion({ ...editedQuestion, answer: newAnswers });
+  };
+  
+  const addBlank = () => {
+    let newNumOptions = editedQuestion.numOptions + 1;
+    let newAnswers = [...editedQuestion.answer, ''];
+    setEditedQuestion({ ...editedQuestion, numOptions: newNumOptions, answer: newAnswers });
+  };
+  
+  
   return (
     <>
-      <h1>Quiz Questions</h1>
+      <h1>Edit Question</h1>
 
-      <input type="text" id="qTitle" name="answer" value="Question Title" />
+      
+      <input
+        type="text"
+        id="qTitle"
+        name="question"
+        value={editedQuestion.title}
+        onChange={(e) => handleInputChange('title', e.target.value)}
+      />
       <label htmlFor="qTitle"></label>
 
-      <select style={{ marginLeft: "10px" }}>
-        <option value="1">Multiple Choice</option>
-        <option value="2">True/False</option>
-        <option value="2">Fill in the blank</option>
+      <select
+        style={{ marginLeft: "10px" }}
+        value={editedQuestion.questionType}
+        onChange={(e) => handleInputChange('questionType', e.target.value)}
+      >
+        <option value="Multiple Choice">Multiple Choice</option>
+        <option value="True/False">True/False</option>
+        <option value="Blank">Fill in the Blank</option>
       </select>
+
+      {editedQuestion.questionType === "multiple_choice" && (
+        editedQuestion.options.map((option, index) => (
+          <div key={index}>
+            <input
+              type="text"
+              value={option}
+              onChange={(e) => {
+                const newOptions = [...editedQuestion.options];
+                newOptions[index] = e.target.value;
+                handleInputChange('options', newOptions);
+              }}
+            />
+            <button onClick={() => handleInputChange('answer', option)}>Set as Correct</button>
+          </div>
+        ))
+      )}
 
       <span className="float-end">
         {" "}
@@ -69,7 +259,13 @@ function QuizQuestionsEditor() {
         </span>
       </div>
 
-      <textarea rows={5} cols={100} placeholder={""} />
+      <textarea
+        rows={5}
+        cols={100}
+        placeholder="Enter question details here..."
+        value={editedQuestion.content || ''}
+        onChange={(e) => handleInputChange('content', e.target.value)}
+      />
 
       <div>
         <span
@@ -87,80 +283,7 @@ function QuizQuestionsEditor() {
       </div>
 
       <h4>Answers:</h4>
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <i className="fa-solid fa-arrow-right green-arrow"></i>
-        <h6 style={{ margin: "0 10px" }}>Correct Answer:</h6>
-        <input type="number" value="4" />
-      </div>
-      <button
-        className="green-outline"
-        style={{ marginTop: "20px", marginBottom: "20px" }}
-      >
-        <i className="fa-solid fa-ellipsis"></i>
-      </button>
-
-      <Grid>
-        <Box
-          sx={{
-            backgroundColor: "transparent",
-            border: "1px solid #ddd",
-            borderRadius: "5px",
-            padding: "10px",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <i className="fa-solid fa-arrow-right green-arrow"></i>
-              <h6 style={{ margin: "0 10px" }}>Possible Answer:</h6>
-              <input type="number" value="3" />
-            </div>
-
-            <div>
-              <i className="fa-solid fa-pencil"></i>{" "}
-              <i className="fa-solid fa-trash"></i>
-            </div>
-          </div>
-
-          <button
-            className="red-outline"
-            style={{ marginTop: "20px", marginBottom: "20px" }}
-          >
-            <i className="fa-solid fa-ellipsis"></i>
-          </button>
-        </Box>
-      </Grid>
-
-      <div>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <i className="fa-solid fa-arrow-right green-arrow"></i>
-          <h6 style={{ margin: "0 10px" }}>Possible Answer:</h6>
-          <input type="number" value="3" />
-        </div>
-        <button className="red-outline" style={{ marginRight: "10px" }}>
-            <i className="fa-solid fa-ellipsis"></i>
-          </button>
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          
-          <button
-            style={{
-              color: "red",
-              border: "none",
-              background: "none",
-              padding: "0",
-              font: "inherit",
-              cursor: "pointer",
-            }}
-          >
-            <i className="fa-solid fa-plus"></i> Add Another Answer
-          </button>
-        </div>
-      </div>
+      {renderAnswerSection()}
 
       <div style={{ display: "flex", alignItems: "center" }}>
         <i style={{ color: "green" }} className="fa-solid fa-comment"></i>
@@ -169,9 +292,8 @@ function QuizQuestionsEditor() {
       </div>
 
       <div>
-        <button className="btn btn-light">Cancel</button>
-
-        <button className="btn btn-danger">Update Question</button>
+      <button className="btn btn-light" onClick={onCancel}>Cancel</button>
+      <button className="btn btn-danger" onClick={saveChanges}>Save Changes</button>
       </div>
     </>
   );
