@@ -37,8 +37,7 @@ function QuizQuestionsEditor() {
   const [questionList2, setQuestionList2] = useState([]);
   const [question, setQuestion] = useState<any | null>(initialQuestionState);
 
-  console.log("TEST");
-  console.log(question);
+
 
   // NEEDED FOR EDITING:
   // const fetchQuestions = (quizId: any) => {
@@ -143,7 +142,7 @@ function QuizQuestionsEditor() {
       <div style={{ display: "flex", alignItems: "center" }}>
         <i className="fa-solid fa-arrow-right green-arrow"></i>
         <h6 style={{ margin: "0 10px" }}>Correct Answer:</h6>
-        <input type="number" value={question.answer[0]} />
+        <input type="text" value={question.answer[0]} onChange={(e) => setQuestion({ ...question, answer: [e.target.value] })}/>
       </div>
       <button
         className="green-outline"
@@ -189,14 +188,24 @@ function QuizQuestionsEditor() {
         </Box>
       </Grid> */}
       <div>
-        {/* <div style={{ display: "flex", alignItems: "center" }}>
-          <i className="fa-solid fa-arrow-right green-arrow"></i>
-          <h6 style={{ margin: "0 10px" }}>Possible Answer:</h6>
-          <input type="number" value="" />
-        </div> */}
-        {/* <button className="red-outline" style={{ marginRight: "10px" }}>
-          <i className="fa-solid fa-ellipsis"></i>
-        </button> */}
+      {question.options.filter((option : any) => !question.answer.includes(option)).map((value: string, index: number) => (
+        <div key={index}>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <i className="fa-solid fa-arrow-right green-arrow"></i>
+            <h6 style={{ margin: "0 10px" }}>Possible Answer:</h6>
+            <input type="text" value={value} onChange={(e) => {
+                  const updatedOptions = [...question.options];
+                  updatedOptions[index] = e.target.value;
+                  setQuestion({ ...question, options: updatedOptions });
+                }}/>
+            
+          </div>
+          <button className="red-outline" style={{ marginRight: "10px" }}>
+            <i className="fa-solid fa-ellipsis"></i>
+          </button>
+        </div>
+      ))}
+        
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <button
             style={{
