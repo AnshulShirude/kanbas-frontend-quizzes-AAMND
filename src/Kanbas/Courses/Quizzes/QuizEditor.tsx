@@ -65,6 +65,16 @@ const QuizEditor = () => {
     dispatch(publishQuiz(quiz));
   };
 
+  const handlePublish = (quizId: any) => {
+    client.publishQuiz(quizId).then((status) => {
+      dispatch(publishQuiz(quizId));
+    });
+    findQuizzesForCourse(courseId).then((quizzes) =>
+      dispatch(setQuizzes(quizzes)))
+  };
+
+
+
   return (
     <div>
       <QuizEditorNav />
@@ -225,11 +235,13 @@ const QuizEditor = () => {
             </a>
           </Link>
 
-          <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quizId}`}>
-            <a className="btn btn-primary" onClick={handleSavePublishChanges}>
+          <Link to={`/Kanbas/Courses/${courseId}/Quizzes`}>
+            <button className="btn btn-primary" onClick={() => { handleSaveChanges(); handlePublish(quizId); }}>
               Save and Publish
-            </a>
+            </button>
           </Link>
+
+
 
           <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quizId}`}>
             <a className="btn btn-danger">
