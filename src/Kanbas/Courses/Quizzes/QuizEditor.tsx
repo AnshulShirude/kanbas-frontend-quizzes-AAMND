@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { KanbasState } from "../../store";
 import { findQuizzesForCourse } from "./client";
+import { Link } from 'react-router-dom';
 import {
   addQuiz,
   setQuizzes,
@@ -56,6 +57,12 @@ const QuizEditor = () => {
     // Code to save changes and navigate to Quiz Details screen
     const status = await client.updateQuiz(quiz);
     dispatch(updateQuiz(quiz));
+  };
+  const handleSavePublishChanges = async () => {
+    // Code to save changes and navigate to Quiz Details screen
+    const status = await client.publishQuiz(quiz);
+    // dispatch(updateQuiz(quiz));
+    dispatch(publishQuiz(quiz));
   };
 
   return (
@@ -211,13 +218,24 @@ const QuizEditor = () => {
               onChange={(e) => setQuiz({ ...quiz, untilDate: e.target.value })}
             />
           </div>
-          <button
-            type="button"
-            className="btn btn-success"
-            onClick={handleSaveChanges}
-          >
-            Save
-          </button>
+
+          <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quizId}`}>
+            <a className="btn btn-success" onClick={handleSaveChanges}>
+              Save
+            </a>
+          </Link>
+
+          <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quizId}`}>
+            <a className="btn btn-primary" onClick={handleSavePublishChanges}>
+              Save and Publish
+            </a>
+          </Link>
+
+          <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quizId}`}>
+            <a className="btn btn-danger">
+              Cancel
+            </a>
+          </Link>
         </li>
       </ul>
     </div>
