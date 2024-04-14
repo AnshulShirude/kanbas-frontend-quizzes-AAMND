@@ -58,6 +58,12 @@ const QuizEditor = () => {
     const status = await client.updateQuiz(quiz);
     dispatch(updateQuiz(quiz));
   };
+  const handleSavePublishChanges = async () => {
+    // Code to save changes and navigate to Quiz Details screen
+    const status = await client.publishQuiz(quiz);
+    // dispatch(updateQuiz(quiz));
+    dispatch(publishQuiz(quiz));
+  };
 
   return (
     <div>
@@ -216,6 +222,12 @@ const QuizEditor = () => {
           <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quizId}`}>
             <a className="btn btn-success" onClick={handleSaveChanges}>
               Save
+            </a>
+          </Link>
+
+          <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quizId}`}>
+            <a className="btn btn-primary" onClick={handleSavePublishChanges}>
+              Save and Publish
             </a>
           </Link>
 
