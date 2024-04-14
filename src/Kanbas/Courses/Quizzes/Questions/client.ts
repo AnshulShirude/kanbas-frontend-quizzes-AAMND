@@ -1,6 +1,7 @@
 import axios from "axios";
 const QUESTIONS_API = "http://localhost:4000/api/questions";
 const QUIZZES_API = "http://localhost:4000/api/quizzes";
+
 export const updateQuiz = async (question : any) => {
   const response = await axios.
     put(`${QUESTIONS_API}/${question._id}`, question);

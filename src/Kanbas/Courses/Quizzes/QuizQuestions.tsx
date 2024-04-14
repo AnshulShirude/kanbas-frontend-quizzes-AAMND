@@ -1,51 +1,41 @@
 import { Link } from "react-router-dom";
 import QuizEditorNav from "./QuizEditorNav";
 import QuizQuestionsEditor from "./QuizQuestionsEditor";
-import { useState } from "react";
-const initialQuestions = [
-  {
-    id: "q1",
-    type: "true_false",
-    question: "The sky is blue.",
-    answer: true,
-  },
-  {
-    id: "q2",
-    type: "multiple_choice",
-    question: "Which of the following is a programming language?",
-    options: ["Python", "Snake", "Cobra", "Viper"],
-    answer: "Python",
-  },
-  {
-    id: "q3",
-    type: "fill_blank",
-    question: "________ is the capital of France.",
-    answer: "Paris",
-  },
-  {
-    id: "q4",
-    type: "multiple_choice",
-    question: "What is the result of 3 * 3?",
-    options: ["6", "9", "12", "15"],
-    answer: "9",
-  },
-  {
-    id: "q5",
-    type: "true_false",
-    question: "Humans can breathe underwater without any help.",
-    answer: false,
-  },
-  {
-    id: "q6",
-    type: "fill_blank",
-    question: "The chemical symbol for water is _______.",
-    answer: "H2O",
-  },
-];
+import {
+  JSXElementConstructor,
+  Key,
+  ReactElement,
+  ReactNode,
+  ReactPortal,
+  useEffect,
+  useState,
+} from "react";
+import { useParams } from "react-router";
+import { findQuizzesForCourse } from "./client";
+import { findQuestionsForQuiz } from "./Questions/client";
 
 function QuizQuestions() {
-  const [questions, setQuestions] = useState(initialQuestions);
   const [showEditor, setShowEditor] = useState(false);
+  const { quizId } = useParams();
+  const [questionList2, setQuestionList2] = useState([]);
+  const [question, setQuestion] = useState(null);
+
+  const fetchQuestions = (quizId: any) => {
+    findQuestionsForQuiz(quizId)
+      .then((questionList) => {
+        if (questionList.length > 0) {
+          setQuestionList2(questionList);
+          setQuestion(questionList[0]);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching quiz questions:", error);
+      });
+  };
+
+  useEffect(() => {
+    fetchQuestions(quizId);
+  }, [quizId]);
 
   // Add a new question
   const handleAddNewQuestion = () => {
@@ -56,22 +46,20 @@ function QuizQuestions() {
   const renderQuestionFields = (question: any) => (
     <li key={question.id} className="list-group-item">
       <div>
-        <strong>Q:</strong> {question.question}
+        <strong>Q: </strong> {question.content}
         <div>
-          {question.type === "multiple_choice" && (
+          {(question.questionType === "Multiple Choice" || question.questionType === "True/False")&& (
             <div className="mt-2">
               <strong>Options:</strong>
               {question.options.map((option: any, index: any) => (
-                <div key={index} className="form-check">
+                <div key={index} >
                   <input
-                    className="form-check-input"
                     type="radio"
                     name={`option-${question.id}`}
                     id={`option-${question.id}-${index}`}
                     value={option}
                     checked={question.answer === option}
                     onChange={() => {}}
-                    disabled
                   />
                   <label
                     className="form-check-label"
@@ -83,7 +71,9 @@ function QuizQuestions() {
               ))}
             </div>
           )}
-          {question.type === "true_false" && (
+
+          {/*
+          {question.questionType === "True/False" && (
             <div className="mt-2">
               <strong>Answer:</strong>
               <p className="form-control-plaintext">
@@ -91,12 +81,26 @@ function QuizQuestions() {
               </p>
             </div>
           )}
-          {question.type === "fill_blank" && (
-            <div className="mt-2">
-              <strong>Answer:</strong>
-              <p className="form-control-plaintext">{question.answer}</p>
-            </div>
-          )}
+        */}
+          {question.questionType === "Blank" && (
+          <div className="mt-2">
+            <strong>Fill in the blanks</strong>
+            {question?.questionType === 'Blank' && [...Array(question?.numOptions)].map((_, index) => (
+              <div key={index}>
+                <input
+                  type="text"
+                  id={`box${index + 1}`}
+                  name="answer"
+                  value=''
+                  style={{marginBottom: '10px'}}
+                />
+                <label  htmlFor={`box${index + 1}`}></label>
+                <br />
+              </div>
+            ))}
+          </div>
+        )}
+
         </div>
       </div>
       {/* Edit button goes here */}
@@ -118,7 +122,7 @@ function QuizQuestions() {
         {!showEditor ? (
           <div>
             <ul className="list-group">
-              {questions.map(renderQuestionFields)}
+              {questionList2.map(renderQuestionFields)}
             </ul>
             <div className="mt-3">
               <button
