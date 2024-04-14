@@ -13,13 +13,48 @@ import { FaKeyboard } from "react-icons/fa";
 import { Box, Grid } from "@mui/material";
 import { FaLinkSlash } from "react-icons/fa6";
 import { PiArrowsOutSimpleLight } from "react-icons/pi";
+import PossibleAnswer from "./PossibleAnswer";
+import { useParams } from "react-router-dom";
+import { findQuestionsForQuiz } from "./Questions/client";
+import {
+  useEffect,
+  useState,
+} from "react";
+
 
 function QuizQuestionsEditor() {
+  const { quizId } = useParams();
+  const [questionList2, setQuestionList2] = useState([]);
+
+
+
+  const fetchQuestions = (quizId: any) => {
+    findQuestionsForQuiz(quizId)
+      .then((questionList) => {
+        if (questionList.length > 0) {
+          setQuestionList2(questionList);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching quiz questions:", error);
+      });
+  };
+
+
+  useEffect(() => {
+    fetchQuestions(quizId);
+  }, [quizId]);
   return (
     <>
       <h1>Quiz Questions</h1>
 
-      <input type="text" id="qTitle" name="answer" value="Question Title" />
+      <input
+        type="text"
+        id="qTitle"
+        name="answer"
+        placeholder="Question Title"
+        value=""
+      />
       <label htmlFor="qTitle"></label>
 
       <select style={{ marginLeft: "10px" }}>
@@ -118,7 +153,7 @@ function QuizQuestionsEditor() {
             <div style={{ display: "flex", alignItems: "center" }}>
               <i className="fa-solid fa-arrow-right green-arrow"></i>
               <h6 style={{ margin: "0 10px" }}>Possible Answer:</h6>
-              <input type="number" value="3" />
+              <input type="number" value="" />
             </div>
 
             <div>
@@ -143,10 +178,9 @@ function QuizQuestionsEditor() {
           <input type="number" value="3" />
         </div>
         <button className="red-outline" style={{ marginRight: "10px" }}>
-            <i className="fa-solid fa-ellipsis"></i>
-          </button>
+          <i className="fa-solid fa-ellipsis"></i>
+        </button>
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          
           <button
             style={{
               color: "red",
@@ -157,7 +191,7 @@ function QuizQuestionsEditor() {
               cursor: "pointer",
             }}
           >
-            <i className="fa-solid fa-plus"></i> Add Another Answer
+              <i className="fa-solid fa-plus"></i> Add Another Answer{" "}
           </button>
         </div>
       </div>
@@ -173,6 +207,8 @@ function QuizQuestionsEditor() {
 
         <button className="btn btn-danger">Update Question</button>
       </div>
+
+            <PossibleAnswer />
     </>
   );
 }

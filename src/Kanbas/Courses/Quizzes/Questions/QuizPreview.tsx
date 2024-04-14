@@ -12,7 +12,7 @@ import { findQuizzesForCourse } from "../client";
 function QuizPreview() {
   const { quizId } = useParams();
 
-const {courseId} = useParams();
+  const {courseId} = useParams();
 
 
   const [question, setQuestion] = useState<any | null>(null);
