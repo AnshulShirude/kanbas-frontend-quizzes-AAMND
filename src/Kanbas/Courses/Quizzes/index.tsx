@@ -8,7 +8,6 @@ function Quizzes() {
       <div style={{ marginTop: "20px" }} />
       <QuizListScreen />
       <QuizzesList />
-      <QuizQuestionsEditor />
     </>
   );
 }

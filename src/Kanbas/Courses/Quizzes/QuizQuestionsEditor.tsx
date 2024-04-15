@@ -22,22 +22,20 @@ import QuizQuestions from "./QuizQuestions";
 
 function QuizQuestionsEditor() {
   const initialQuestionState = {
-      _id: "2",
-      quizId: "1000",
-      questionType: "True/False",
-      title: "Question 2",
-      points: 1,
-      content: "The earth is flat",
-      answer: ["False"],
-      options: ["True", "False"],
-      numOptions: 2,
+    _id: "2",
+    quizId: "1000",
+    questionType: "True/False",
+    title: "Question 2",
+    points: 1,
+    content: "The earth is flat",
+    answer: ["False"],
+    options: ["True", "False"],
+    numOptions: 2,
   };
   const { quizId } = useParams();
   const { courseId } = useParams();
   const [questionList2, setQuestionList2] = useState([]);
   const [question, setQuestion] = useState<any | null>(initialQuestionState);
-
-
 
   // NEEDED FOR EDITING:
   // const fetchQuestions = (quizId: any) => {
@@ -59,7 +57,11 @@ function QuizQuestionsEditor() {
   // NEEDED FOR EDITING
 
   const handleAddAnotherAnswer = () => {
-    return <PossibleAnswer />;
+    // return <PossibleAnswer />;
+    const newList = [...question.options, "New Item"];
+    setQuestion({ ...question, options: newList });
+    console.log("did this again");
+
     // return <PossibleAnswer/>
     // setQuestion({ ...question, options: [...question.options, ""] });
   };
@@ -90,13 +92,15 @@ function QuizQuestionsEditor() {
         {" "}
         pts:
         <input
-          type="number"
+          type="text"
           id="numPoints"
           name="answer"
-          value="1"
+          value={question?.points || ""}
+          onChange={(e) => setQuestion({ ...question, points: e.target.value })}
           style={{ width: "20px", marginRight: "20px" }}
         />
         <label htmlFor="numPoints"></label>
+        
       </span>
       <hr></hr>
       <p>
@@ -142,7 +146,13 @@ function QuizQuestionsEditor() {
       <div style={{ display: "flex", alignItems: "center" }}>
         <i className="fa-solid fa-arrow-right green-arrow"></i>
         <h6 style={{ margin: "0 10px" }}>Correct Answer:</h6>
-        <input type="text" value={question.answer[0]} onChange={(e) => setQuestion({ ...question, answer: [e.target.value] })}/>
+        <input
+          type="text"
+          value={question.answer[0]}
+          onChange={(e) =>
+            setQuestion({ ...question, answer: [e.target.value] })
+          }
+        />
       </div>
       <button
         className="green-outline"
@@ -188,24 +198,31 @@ function QuizQuestionsEditor() {
         </Box>
       </Grid> */}
       <div>
-      {question.options.filter((option : any) => !question.answer.includes(option)).map((value: string, index: number) => (
-        <div key={index}>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <i className="fa-solid fa-arrow-right green-arrow"></i>
-            <h6 style={{ margin: "0 10px" }}>Possible Answer:</h6>
-            <input type="text" value={value} onChange={(e) => {
-                  const updatedOptions = [...question.options];
-                  updatedOptions[index] = e.target.value;
-                  setQuestion({ ...question, options: updatedOptions });
-                }}/>
-            
-          </div>
-          <button className="red-outline" style={{ marginRight: "10px" }}>
-            <i className="fa-solid fa-ellipsis"></i>
-          </button>
-        </div>
-      ))}
-        
+        {question.options
+          .filter((option: any) => !question.answer.includes(option))
+          .map((value: string, index: number) => (
+            <div key={index}>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <i className="fa-solid fa-arrow-right green-arrow"></i>
+                <h6 style={{ margin: "0 10px" }}>Possible Answer:</h6>
+                <input
+                  type="text"
+                  value={value}
+                  onChange={(e) => {
+                    const updatedOptions = [...question.options];
+                    console.log(updatedOptions);
+                    updatedOptions[index] = e.target.value;
+                    setQuestion({ ...question, options: updatedOptions });
+                    console.log(updatedOptions);
+                  }}
+                />
+              </div>
+              <button className="red-outline" style={{ marginRight: "10px" }}>
+                <i className="fa-solid fa-ellipsis"></i>
+              </button>
+            </div>
+          ))}
+
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <button
             style={{
