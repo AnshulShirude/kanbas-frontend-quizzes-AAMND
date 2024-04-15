@@ -2,21 +2,23 @@ import axios from "axios";
 const QUESTIONS_API = "http://localhost:4000/api/questions";
 const QUIZZES_API = "http://localhost:4000/api/quizzes";
 
-export const updateQuiz = async (question : any) => {
+export const updateQuestion = async (question : any) => {
   const response = await axios.
     put(`${QUESTIONS_API}/${question._id}`, question);
   return response.data;
 };
-export const deleteQuiz = async (questionId : any) => {
+export const deleteQuestion = async (questionId : any) => {
   const response = await axios
     .delete(`${QUESTIONS_API}/${questionId}`);
   return response.data;
 };
-export const createQuiz = async (quizId: any, question : any) => {
+export const createQuestion = async (quizId: any, question : any) => {
   const response = await axios.post(
-    `${QUESTIONS_API}/${quizId}/questions`,
+    `${QUIZZES_API}/${quizId}/questions`,
     question
   );
+  
+  console.log(response.data)
   return response.data;
 };
 export const findQuestionsForQuiz = async (quizId: any) => {

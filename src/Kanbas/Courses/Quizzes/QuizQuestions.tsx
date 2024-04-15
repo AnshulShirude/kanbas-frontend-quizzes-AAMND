@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import QuizEditorNav from "./QuizEditorNav";
-import QuizQuestionsEditor from "./QuizQuestionsEditor";
+import QuizQuestionsEditor from "./QuizQuestionsAdder";
 import {
   JSXElementConstructor,
   Key,

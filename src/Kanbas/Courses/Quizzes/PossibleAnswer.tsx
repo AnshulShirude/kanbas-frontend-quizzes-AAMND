@@ -1,5 +1,5 @@
 import React from "react";
-import { FaBold, FaItalic, FaHighlighter } from "react-icons/fa";
+import { FaBold, FaItalic, FaHighlighter, FaTrashAlt } from "react-icons/fa";
 import { FiUnderline } from "react-icons/fi";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { FaKeyboard } from "react-icons/fa";
@@ -16,6 +16,9 @@ function PossibleAnswer() {
       <div style={{ marginTop: "20px", marginBottom: "20px" }}>
         <button className="red-outline">
           <i className="fa-solid fa-ellipsis"></i>
+        </button>
+        <button className="red-outline">
+          <FaTrashAlt /> 
         </button>
       </div>
     </div>
