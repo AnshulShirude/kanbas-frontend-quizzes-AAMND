@@ -13,12 +13,23 @@ import {
 import { useParams } from "react-router";
 import { findQuizzesForCourse } from "./client";
 import { findQuestionsForQuiz } from "./Questions/client";
+import { useSelector, useDispatch } from "react-redux";
+import { KanbasState } from "../../store";
+
+
 
 function QuizQuestions() {
   const [showEditor, setShowEditor] = useState(false);
   const { quizId } = useParams();
   const [questionList2, setQuestionList2] = useState([]);
   const [question, setQuestion] = useState(null);
+  const { courseId } = useParams();
+  const quizList = useSelector(
+    (state: KanbasState) => state.quizzesReducer.quizzes
+  );
+  const quiz = quizList.find((quiz) => quiz._id === quizId);
+
+
 
   const fetchQuestions = (quizId: any) => {
     findQuestionsForQuiz(quizId)
@@ -104,15 +115,15 @@ function QuizQuestions() {
         </div>
       </div>
       {/* Edit button goes here */}
+      <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz?._id}/Edit/Details/Edit`}>
       <button
         type="button"
         className="btn btn-primary btn-sm"
-        onClick={() => {
-          /* logic to handle edit */
-        }}
+        onClick={() => { setShowEditor(true)}}
       >
         Edit
       </button>
+      </Link>
     </li>
   );
   return (
@@ -125,13 +136,16 @@ function QuizQuestions() {
               {questionList2.map(renderQuestionFields)}
             </ul>
             <div className="mt-3">
+            <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz?._id}/Edit/Details/Add`}>
+
               <button
                 type="button"
                 className="btn btn-secondary"
-                onClick={handleAddNewQuestion}
               >
                 + New Question
               </button>
+              </Link>
+
             </div>
           </div>
         ) : (
