@@ -5,7 +5,13 @@ import {
   TbSquareLetterA,
   TbLetterA,
 } from "react-icons/tb";
-import { FaBold, FaItalic, FaHighlighter, FaTrashAlt, FaPencilAlt } from "react-icons/fa";
+import {
+  FaBold,
+  FaItalic,
+  FaHighlighter,
+  FaTrashAlt,
+  FaPencilAlt,
+} from "react-icons/fa";
 import { FiUnderline } from "react-icons/fi";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { HiOutlineEllipsisVertical } from "react-icons/hi2";
@@ -15,7 +21,11 @@ import { FaLinkSlash } from "react-icons/fa6";
 import { PiArrowsOutSimpleLight } from "react-icons/pi";
 import PossibleAnswer from "./PossibleAnswer";
 import { useParams } from "react-router-dom";
-import { createQuestion, findQuestionsForQuiz, updateQuestion } from "./Questions/client";
+import {
+  createQuestion,
+  findQuestionsForQuiz,
+  updateQuestion,
+} from "./Questions/client";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import QuizQuestions from "./QuizQuestions";
@@ -39,7 +49,6 @@ function QuizQuestionsAdder() {
   const [question, setQuestion] = useState<any | null>(initialQuestionState);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [openPopupId, setOpenPopupId] = useState<string | null>(null);
-
 
   // NEEDED FOR EDITING:
   // const fetchQuestions = (quizId: any) => {
@@ -84,11 +93,9 @@ function QuizQuestionsAdder() {
     const newList = [...question.options, question.answer[0]];
     setQuestion({ ...question, options: newList });
     createQuestion(quizId, question)
-      .then((response) => {
-      })
-      .catch((error) => {
-      });
-  }
+      .then((response) => {})
+      .catch((error) => {});
+  };
 
   return (
     <>
@@ -124,7 +131,6 @@ function QuizQuestionsAdder() {
           style={{ width: "20px", marginRight: "20px" }}
         />
         <label htmlFor="numPoints"></label>
-        
       </span>
       <hr></hr>
       <p>
@@ -150,11 +156,14 @@ function QuizQuestionsAdder() {
           <HiOutlineEllipsisVertical />
         </span>
       </div>
-      <textarea rows={5} cols={100}
-      value={question.content}
-      onChange={(e) =>
-        setQuestion({ ...question, content: [e.target.value] })} >
-        </textarea>
+      <textarea
+        rows={5}
+        cols={100}
+        value={question.content}
+        onChange={(e) =>
+          setQuestion({ ...question, content: [e.target.value] })
+        }
+      ></textarea>
       <div>
         <span
           className="float-end"
@@ -237,25 +246,32 @@ function QuizQuestionsAdder() {
                   type="text"
                   value={value}
                   onChange={(e) => {
-                    const updatedOptions = [...question.options.filter((option: any) => !question.answer.includes(option))];
+                    let updatedOptions = [
+                      ...question.options.filter(
+                        (option: any) => !question.answer.includes(option)
+                      ),
+                    ];
                     console.log(updatedOptions);
                     updatedOptions[index] = e.target.value;
+                    updatedOptions = [...updatedOptions, question.answer[0]];
                     setQuestion({ ...question, options: updatedOptions });
                     console.log(updatedOptions);
                   }}
                   disabled={editingIndex !== index}
                 />
-                <button style={{marginLeft: '125px'}} onClick={() => handleDeleteAnswer(index)}>
-                 <FaTrashAlt /> 
-              </button>
-              <button onClick={() => handleEditAnswer(index)}>
-                 <FaPencilAlt /> 
-              </button>
+                <button
+                  style={{ marginLeft: "125px" }}
+                  onClick={() => handleDeleteAnswer(index)}
+                >
+                  <FaTrashAlt />
+                </button>
+                <button onClick={() => handleEditAnswer(index)}>
+                  <FaPencilAlt />
+                </button>
               </div>
               <button className="red-outline" style={{ marginRight: "10px" }}>
                 <i className="fa-solid fa-ellipsis"></i>
               </button>
-              
             </div>
           ))}
 
@@ -290,7 +306,8 @@ function QuizQuestionsAdder() {
         <Link
           to={`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/Edit/Questions`}
         >
-          <button className="btn btn-danger" onClick={handleUpdateQuestion}>Add Question
+          <button className="btn btn-danger" onClick={handleUpdateQuestion}>
+            Add Question
           </button>
         </Link>
       </div>
