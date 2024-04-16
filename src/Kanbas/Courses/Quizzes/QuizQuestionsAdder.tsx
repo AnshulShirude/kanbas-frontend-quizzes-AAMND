@@ -38,6 +38,7 @@ function QuizQuestionsAdder() {
   const [questionList2, setQuestionList2] = useState([]);
   const [question, setQuestion] = useState<any | null>(initialQuestionState);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [openPopupId, setOpenPopupId] = useState<string | null>(null);
 
 
   // NEEDED FOR EDITING:
