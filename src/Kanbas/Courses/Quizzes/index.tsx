@@ -1,6 +1,6 @@
 import QuizzesList from "./List";
 import QuizListScreen from "./QuizListScreen";
-import QuizQuestionsEditor from "./QuizQuestionsEditor";
+import QuizQuestionsEditor from "./QuizQuestionsAdder";
 
 function Quizzes() {
   return (
