@@ -18,6 +18,9 @@ function QuizPreview() {
   const [questionList, setQuestionList] = useState<any | null>(null);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [quiz, setQuiz] = useState<any | null>(null);
+  const [selectedOptions, setSelectedOptions] = useState<{
+    [key: string]: string;
+  }>({});
 
   const dispatch = useDispatch();
 
@@ -69,6 +72,13 @@ function QuizPreview() {
     color: quizId === "1" ? "red" : "black",
   };
 
+  const handleOptionChange = (questionId: string, option: string) => {
+    setSelectedOptions((prevSelectedOptions) => ({
+      ...prevSelectedOptions,
+      [questionId]: option,
+    }));
+  };
+
   return (
     <>
       <h2 style={{ paddingTop: "20px" }}>{quiz?.title}</h2>
@@ -112,14 +122,8 @@ function QuizPreview() {
                       type="radio"
                       id={`option-${question._id}-${index}`}
                       name="answer"
-                      checked={option === question.selectedOption}
-                      onChange={() => {
-                        const updatedQuestion = {
-                          ...question,
-                          selectedOption: option,
-                        };
-                        setQuestion(updatedQuestion);
-                      }}
+                      checked={option === selectedOptions[question._id]}
+                      onChange={() => handleOptionChange(question._id, option)}
                     />
                     {/* con */}
                     <label htmlFor={`option-${question._id}-${index}`}>
@@ -137,14 +141,10 @@ function QuizPreview() {
                       type="text"
                       id={`box${index + 1}`}
                       name="answer"
-                      value={question.selectedOption || ""}
-                    onChange={(e) => {
-                      const updatedQuestion = {
-                        ...question,
-                        selectedOption: e.target.value,
-                      };
-                      setQuestion(updatedQuestion);
-                    }}
+                      value={selectedOptions[question._id] || ""}
+                      onChange={(e) =>
+                        handleOptionChange(question._id, e.target.value)
+                      }
                     />
                     <label htmlFor={`box${index + 1}`}></label>
                     <br />
