@@ -16,6 +16,7 @@ import {
 import * as client from "./client";
 import QuizEditorNav from "./QuizEditorNav";
 
+
 const QuizEditor = () => {
   const { courseId } = useParams();
   const { quizId } = useParams();
@@ -50,6 +51,8 @@ const QuizEditor = () => {
   const formattedUntilDate = quiz?.untilDate
     ? quiz?.untilDate.split("T")[0]
     : "";
+    const formatShowCorrectAnswersDate = quiz?.showCorrectAnswersDate.split("T")[0]
+  ;
   console.log(quizId);
   console.log(quiz);
 
@@ -73,13 +76,55 @@ const QuizEditor = () => {
       dispatch(setQuizzes(quizzes)))
   };
 
+  const [timeLimitEnabled, setTimeLimitEnabled] = useState(quiz?.timeLimitBool || false);
 
+  // Handler for the checkbox change
+  const toggleTimeLimit = (e : any) => {
+    setTimeLimitEnabled(e.target.checked);
+    // If disabling, set timeLimit to the default value; otherwise, keep the current value.
+    setQuiz({
+      ...quiz,
+      timeLimitBool: e.target.checked,
+      timeLimit: e.target.checked ? quiz?.timeLimit : 20
+    });
+  };
+
+    // Local state for handling if multiple attempts are enabled
+    const [multipleAttemptsEnabled, setMultipleAttemptsEnabled] = useState(quiz?.multipleAttempts || false);
+
+    // Handler for the checkbox to enable/disable multiple attempts
+    const toggleMultipleAttempts = (e : any) => {
+      const attemptsEnabled = e.target.checked;
+      setMultipleAttemptsEnabled(attemptsEnabled);
+      setQuiz({
+        ...quiz,
+        multipleAttempts: attemptsEnabled,
+        numberOfAttempts: attemptsEnabled ? quiz?.numberOfAttempts : 5 // Assuming '1' is the default
+      });
+    };
+
+
+      // Local state to handle if showing correct answers is enabled
+  const [showCorrectAnswersEnabled, setShowCorrectAnswersEnabled] = useState(quiz?.showCorrectAnswers || false);
+
+  // Handler for the checkbox to show/hide correct answers
+  const toggleShowCorrectAnswers = (e :any) => {
+    const showAnswers = e.target.checked;
+    setShowCorrectAnswersEnabled(showAnswers);
+    setQuiz({
+      ...quiz,
+      showCorrectAnswers: showAnswers,
+      // Add additional logic here if you have a related state that needs to be updated when this checkbox is toggled
+    });
+  };
 
   return (
     <div>
       <QuizEditorNav />
       <ul className="list-group wd-modules">
+        
         <li className="list-group-item">
+        <form>
           <input
             // id="title2"
             // type="text"
@@ -88,22 +133,29 @@ const QuizEditor = () => {
             value={quiz?.title}
             onChange={(e) => setQuiz({ ...quiz, title: e.target.value })}
           />
+         
           <textarea
-            className="form-control"
+            className="form-control mb-3"
             placeholder="Description"
             value={quiz?.description}
             onChange={(e) => setQuiz({ ...quiz, description: e.target.value })}
           />
+
+          <div className = "mb-3 ">
+          <label>Quiz Type: </label>
           <select
             className="form-control"
             value={quiz?.quizType}
             onChange={(e) => setQuiz({ ...quiz, quizType: e.target.value })}
           >
+            
             <option value="Graded Quiz">Graded Quiz</option>
             <option value="Practice Quiz">Practice Quiz</option>
             <option value="Graded Survey">Graded Survey</option>
             <option value="Ungraded Survey">Ungraded Survey</option>
           </select>
+
+          <label>Assignment Group: </label>
           <select
             className="form-control"
             value={quiz?.assignmentGroup}
@@ -116,7 +168,14 @@ const QuizEditor = () => {
             <option value="Assignments">Assignments</option>
             <option value="Project">Project</option>
           </select>
+
+          </div>
+          
+          <div className = "mb-3">
+          <h5>Options:</h5>
+      
           <label>
+        
             <input
               type="checkbox"
               checked={quiz?.shuffleAnswers}
@@ -126,35 +185,9 @@ const QuizEditor = () => {
             />
             Shuffle Answers
           </label>
-            <input
-              type="number"
-              className="form-control"
-              placeholder="Time Limit"
-              value={quiz?.timeLimit}
-              onChange={(e) =>
-                setQuiz({ ...quiz, timeLimit: parseInt(e.target.value) })
-              }
-            />
-          <label>
-            <input
-              type="checkbox"
-              checked={quiz?.multipleAttempts}
-              onChange={(e) =>
-                setQuiz({ ...quiz, multipleAttempts: e.target.checked })
-              }
-            />
-            Multiple Attempts
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              checked={quiz?.showCorrectAnswers}
-              onChange={(e) =>
-                setQuiz({ ...quiz, showCorrectAnswers: e.target.checked })
-              }
-            />
-            Show Correct Answers
-          </label>
+          <br></br>
+          
+
           <label>
             <input
               type="checkbox"
@@ -165,6 +198,8 @@ const QuizEditor = () => {
             />
             One Question at a Time?
           </label>
+          <br></br>
+
           <label>
             <input
               type="checkbox"
@@ -175,6 +210,8 @@ const QuizEditor = () => {
             />
             WebCam required
           </label>
+          <br></br>
+
           <label>
             <input
               type="checkbox"
@@ -188,14 +225,92 @@ const QuizEditor = () => {
             />
             Lock Questions After Answering
           </label>
+          <br></br>
 
+
+          <label>
           <input
+            type="checkbox"
+            checked={multipleAttemptsEnabled}
+            onChange={toggleMultipleAttempts}
+          />
+          Enable Multiple Attempts
+        </label>
+        
+        <label>
+        <input
+          type="number"
+          className="form-control"
+          placeholder="Number of Attempts"
+          value={multipleAttemptsEnabled ? quiz?.numberOfAttempts || 5 : 5} // Show current value or default
+          onChange={(e) => setQuiz({ ...quiz, numberOfAttempts: parseInt(e.target.value) })}
+          disabled={!multipleAttemptsEnabled} // Disable the input if the checkbox is not checked
+          style={{ opacity: multipleAttemptsEnabled ? 1 : 0.5, width: '150px' }} // Grey out the input when disabled
+        />
+        </label>
+
+
+<label htmlFor="showCorrectAnswersDate">
+          <input
+            type="checkbox"
+            checked={showCorrectAnswersEnabled}
+            onChange={toggleShowCorrectAnswers}
+          />
+          Show Correct Answers
+        </label>
+
+            <label>
+              
+            <input
+              id="showCorrectAnswersDate"
+              type="date"
+              className="form-control"
+              value={formatShowCorrectAnswersDate}
+              onChange={(e) => setQuiz({ ...quiz, showCorrectAnswersDate: e.target.value })}
+              disabled={!showCorrectAnswersEnabled} // Disable the input if the checkbox is not checked
+              style={{ opacity: showCorrectAnswersEnabled ? 1 : 0.5 }} // Grey out the input when disabled
+            
+            />
+            </label>
+       
+
+
+       
+
+<label>
+          <input
+            type="checkbox"
+            checked={timeLimitEnabled}
+            onChange={toggleTimeLimit}
+          />
+          Enable Time Limit (min)
+        </label>
+        
+        <label>
+        <input
+          type="number"
+          className="form-control"
+          placeholder="Time Limit"
+          value={timeLimitEnabled ? quiz?.timeLimit : 20} // If not enabled, show the default value
+          onChange={(e) => setQuiz({ ...quiz, timeLimit: parseInt(e.target.value) })}
+          disabled={!timeLimitEnabled} // Disable the input if the checkbox is not checked
+          style={{ opacity: timeLimitEnabled ? 1 : 0.5, width: '150px' }} // Grey out the input when disabled
+        />
+        </label>
+
+        <input
             type="text"
             className="form-control"
             placeholder="Access Code"
             value={quiz?.accessCode}
             onChange={(e) => setQuiz({ ...quiz, accessCode: e.target.value })}
           />
+
+              </div>
+
+              
+          <div className = "mb-3">
+        
           <div>
             <label htmlFor="dueDate">Due Date: </label>
             <input
@@ -228,7 +343,11 @@ const QuizEditor = () => {
               onChange={(e) => setQuiz({ ...quiz, untilDate: e.target.value })}
             />
           </div>
+          </div>
 
+           </form>   
+
+            
           <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quizId}`}>
             <a className="btn btn-success" onClick={handleSaveChanges}>
               Save
@@ -248,7 +367,12 @@ const QuizEditor = () => {
               Cancel
             </a>
           </Link>
+          
+
+
         </li>
+
+       
       </ul>
     </div>
   );
