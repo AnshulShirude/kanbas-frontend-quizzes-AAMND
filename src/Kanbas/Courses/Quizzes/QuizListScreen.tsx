@@ -40,8 +40,7 @@ function QuizListScreen() {
     });
   };
   const handleUpdateQuiz = async () => {
-    const status = await client.updateQuiz(quiz);
-    dispatch(updateQuiz(quiz));
+    window.location.href = `/Kanbas/Courses/${courseId}/Quizzes/${quiz?._id}/Edit/Details`;
   };
   const handleOpenPopup = (quizId: any) => {
     setOpenPopupId(quizId === openPopupId ? null : quizId);
@@ -171,13 +170,14 @@ function QuizListScreen() {
                       Preview
                     </button>
                     </Link>
+                    <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz?._id}/Edit/Details`}>
                     <button
                       type="button"
                       className="btn btn-light"
-                      onClick={handleUpdateQuiz}
                     >
                       <i className="fa fa-pencil" /> Edit
                     </button>
+                    </Link>
                     <button
                       type="button"
                       className="btn btn-danger"
