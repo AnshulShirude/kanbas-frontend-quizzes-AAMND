@@ -47,8 +47,7 @@ function QuizQuestionsEditor() {
       .then((questionList) => {
           setQuestionList2(questionList);
         setQuestion(questionList.find((q: any) => q._id === questionId));
-        console.log('HEREHRER')
-        console.log(questionList.find((q: any) => q._id === questionId))
+
         
         }
       )
@@ -65,8 +64,7 @@ function QuizQuestionsEditor() {
     // return <PossibleAnswer />;
     const newList = [...question.options, "New Item"];
     setQuestion({ ...question, options: newList });
-    console.log("ADDED ANSWER")
-    console.log(question)
+
 
     // return <PossibleAnswer/>
     // setQuestion({ ...question, options: [...question.options, ""] });
@@ -86,11 +84,8 @@ function QuizQuestionsEditor() {
   const handleUpdateQuestion = () => {
     const newList = [...question.options, question.answer[0]];
     const newNumOptions = newList.length + 1;
-    console.log("NEW LIST")
-    console.log(newList)
+
     setQuestion({ ...question, options: newList});
-    console.log("OPTIONS")
-    console.log(question)
     updateQuestion(question)
       .then((response) => {
       })

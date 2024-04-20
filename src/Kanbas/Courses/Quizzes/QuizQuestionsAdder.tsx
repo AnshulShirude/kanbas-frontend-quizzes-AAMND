@@ -74,7 +74,6 @@ function QuizQuestionsAdder() {
     // return <PossibleAnswer />;
     const newList = [...question.options, "New Item"];
     setQuestion({ ...question, options: newList });
-    console.log("did this again");
 
     // return <PossibleAnswer/>
     // setQuestion({ ...question, options: [...question.options, ""] });

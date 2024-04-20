@@ -50,8 +50,7 @@ const QuizEditor = () => {
   const formattedUntilDate = quiz?.untilDate
     ? quiz?.untilDate.split("T")[0]
     : "";
-  console.log(quizId);
-  console.log(quiz);
+
 
   const handleSaveChanges = async () => {
     // Code to save changes and navigate to Quiz Details screen
