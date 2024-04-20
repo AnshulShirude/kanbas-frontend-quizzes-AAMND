@@ -53,8 +53,6 @@ const QuizEditor = () => {
     : "";
     const formatShowCorrectAnswersDate = quiz?.showCorrectAnswersDate.split("T")[0]
   ;
-  console.log(quizId);
-  console.log(quiz);
 
   const handleSaveChanges = async () => {
     // Code to save changes and navigate to Quiz Details screen

@@ -6,7 +6,6 @@ import TernaryOperator from "./conditionals/TernaryOperator";
 import WorkingWithFunctions from "./WorkingWithFunctions";
 
 function JavaScript() {
-  console.log("Hello world");
   return (
     <div>
       <h1>JavaScript</h1>

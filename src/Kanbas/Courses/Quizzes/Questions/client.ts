@@ -5,6 +5,7 @@ const QUIZZES_API = "http://localhost:4000/api/quizzes";
 export const updateQuestion = async (question : any) => {
   const response = await axios.
     put(`${QUESTIONS_API}/${question._id}`, question);
+
   return response.data;
 };
 export const deleteQuestion = async (questionId : any) => {
@@ -17,8 +18,6 @@ export const createQuestion = async (quizId: any, question : any) => {
     `${QUIZZES_API}/${quizId}/questions`,
     question
   );
-  
-  console.log(response.data)
   return response.data;
 };
 export const findQuestionsForQuiz = async (quizId: any) => {

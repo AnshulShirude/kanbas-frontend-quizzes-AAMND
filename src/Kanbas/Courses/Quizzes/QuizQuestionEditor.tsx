@@ -30,50 +30,41 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import QuizQuestions from "./QuizQuestions";
 
-function QuizQuestionsAdder() {
-  const initialQuestionState = {
-        _id: "1",
-        quizId: "1000",
-        questionType: "Multiple Choice",
-        title: "Enter Title",
-        points: 1,
-        content: "Enter Conent",
-        answer: [],
-        options: [],
-        numOptions: 2,
-    }
+function QuizQuestionsEditor() {
+  
   const { quizId } = useParams();
   const { courseId } = useParams();
+  const { questionId} = useParams();
 
-  const [questionList2, setQuestionList2] = useState([]);
-  const [question, setQuestion] = useState<any | null>(initialQuestionState);
+  const [questionList2, setQuestionList2] = useState<[] | null>(null);
+  const [question, setQuestion] = useState<any | null>();
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [questionType, setquestionType] = useState<string>('Multiple Choice');
   
 
-  // NEEDED FOR EDITING:
-  // const fetchQuestions = (quizId: any) => {
-  //   findQuestionsForQuiz(quizId)
-  //     .then((questionList) => {
-  //       if (questionList.length > 0) {
-  //         setQuestionList2(questionList);
-  //         setQuestion({ ...question, questionType: "Multiple Choice" });
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching quiz questions:", error);
-  //     });
-  // };
+  const fetchQuestions = (quizId: any) => {
+    findQuestionsForQuiz(quizId)
+      .then((questionList) => {
+          setQuestionList2(questionList);
+        setQuestion(questionList.find((q: any) => q._id === questionId));
 
-  // useEffect(() => {
-  //   fetchQuestions(quizId);
-  // }, [quizId]);
-  // NEEDED FOR EDITING
+        
+        }
+      )
+      .catch((error) => {
+        console.error("Error fetching quiz questions:", error);
+      });
+  };
+
+  useEffect(() => {
+    fetchQuestions(quizId);
+  }, [quizId]);
 
   const handleAddAnotherAnswer = () => {
     // return <PossibleAnswer />;
     const newList = [...question.options, "New Item"];
     setQuestion({ ...question, options: newList });
+
 
     // return <PossibleAnswer/>
     // setQuestion({ ...question, options: [...question.options, ""] });
@@ -92,19 +83,14 @@ function QuizQuestionsAdder() {
 
   const handleUpdateQuestion = () => {
     const newList = [...question.options, question.answer[0]];
-    setQuestion({ ...question, options: newList });
-    createQuestion(quizId, question)
-      .then((response) => {})
+    const newNumOptions = newList.length + 1;
+
+    setQuestion({ ...question, options: newList});
+    updateQuestion(question)
+      .then((response) => {
+      })
       .catch((error) => {});
   };
-  const handleTrueFalseChange = () => {
-    
-    setQuestion({ ...question, answer: ['True'], options: ['True', 'False'], numOptions: 2,});
-  // const handleChangeQuestionType = (quizId: any) => {
-  //   setOpenPopupId(quizId === openPopupId ? null : quizId);
-  // };
-  }
-
 
 
   return (
@@ -172,7 +158,7 @@ function QuizQuestionsAdder() {
       <textarea
         rows={5}
         cols={100}
-        value={question.content}
+        value={question?.content}
         onChange={(e) =>
           setQuestion({ ...question, content: [e.target.value] })
         }
@@ -196,7 +182,7 @@ function QuizQuestionsAdder() {
 
       {/* MULTIPLE CHOICE*/}
 
-      {question.questionType === "Multiple Choice" && (
+      {question?.questionType === "Multiple Choice" && (
         
         <> 
       {/* This is the correct answer component*/}
@@ -279,7 +265,7 @@ function QuizQuestionsAdder() {
 
       {/* True/False */}
 
-      {question.questionType === "True/False" && (
+      {question?.questionType === "True/False" && (
         <> 
       {/* This is the correct answer component*/}
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -345,14 +331,14 @@ function QuizQuestionsAdder() {
 
       {/*Fill in the Blank */}
 
-      {question.questionType === "Blank" && (
+      {question?.questionType === "Blank" && (
         <> 
       {/* This is the correct answer component*/}
       
       
       
       <div>
-        {question.options
+        {question?.options
           .map((value: string, index: number) => (
             <div key={index}>
               <div style={{ display: "flex", alignItems: "center" }}>
@@ -403,9 +389,6 @@ function QuizQuestionsAdder() {
         </div>
       </>
       )}
-
-
-
       <div style={{ display: "flex", alignItems: "center" }}>
         <i style={{ color: "green" }} className="fa-solid fa-comment"></i>
         <i style={{ color: "red" }} className="fa-solid fa-comment red"></i>
@@ -422,7 +405,7 @@ function QuizQuestionsAdder() {
           to={`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/Edit/Questions`}
         >
           <button className="btn btn-danger" onClick={handleUpdateQuestion}>
-            Add Question
+            Update Question
           </button>
         </Link>
       </div>
@@ -431,4 +414,4 @@ function QuizQuestionsAdder() {
   ;
 
 
-export default QuizQuestionsAdder;
+export default QuizQuestionsEditor;

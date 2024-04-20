@@ -4,8 +4,6 @@ import { Link, useLocation, useParams } from "react-router-dom";
 function QuizEditorNav() {
   const { pathname } = useLocation();
   const path = pathname.split("/").slice(0, -1).join("/");
-  console.log("hi");
-  console.log(path);
 
   return (
     <nav className="nav nav-tabs mt-2">
