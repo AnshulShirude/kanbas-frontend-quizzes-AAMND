@@ -81,7 +81,12 @@ function QuizDetails() {
         </button>
       </div>
       <div>
-        <h1>{quiz?.title}</h1>
+
+      <div className="mb-3">
+  <h1>{quiz?.title}</h1>
+  <p style={{ marginBottom: '20px' }}>{quiz?.description}</p> {/* Added paragraph tag and margin */}
+</div>
+
         <ul className="list-group">
           <li>
             <strong>Quiz Type: </strong>
@@ -97,36 +102,31 @@ function QuizDetails() {
           </li>
           <li>
             <strong>Shuffle Answers: </strong>
-            {quiz?.shuffleAnswers}
+            {quiz?.shuffleAnswers ? "Yes" : "No"}
           </li>
           <li>
             <strong>Time Limit: </strong>
-            {quiz?.timeLimit}
+
+              {quiz?.timeLimitBool ? quiz?.timeLimit : "No time limit"}
           </li>
           <li>
             <strong>Multiple Attempts: </strong>
-            {quiz?.multipleAttempts}
+            {quiz?.multipleAttempts ? quiz?.numberOfAttempts : "No"}
           </li>
           <li>
-            <strong>View Responses: </strong>
-            {quiz?.viewResponses}
+            <strong>Access Code: </strong>
+            {(quiz?.accessCode == "") ? "No Access Code" : quiz?.accessCode}
           </li>
+        
           <li>
             <strong>Show Correct Answers: </strong>
-            {quiz?.showCorrectAnswers}
+            {quiz?.showCorrectAnswers ? "Yes, revealed: "  + formatDate(quiz?.showCorrectAnswersDate): "No"}
           </li>
           <li>
             <strong>One Question at a Time: </strong>
             {quiz?.oneQuestionAtATime ? "Yes" : "No"}
           </li>
-          <li>
-            <strong>Require Respondus Lockdown Browser: </strong>
-            {quiz?.lockdownRequired ? "Yes" : "No"}
-          </li>
-          <li>
-            <strong>Required to View Quiz Results: </strong>
-            {quiz?.viewQuizResults ? "Yes" : "No"}
-          </li>
+        
 
           <li>
             <strong>Webcam Required: </strong>
@@ -136,6 +136,7 @@ function QuizDetails() {
             <strong>Lock Questions After Answering: </strong>
             {quiz?.lockQuestionsAfterAnswering ? "Yes" : "No"}
           </li>
+        
         </ul>
 
         <div
