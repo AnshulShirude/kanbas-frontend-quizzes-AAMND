@@ -23,6 +23,7 @@ function QuizDetails() {
   );
   const quiz = quizList.find((quiz) => quiz._id === quizId);
 
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) {
@@ -59,13 +60,24 @@ function QuizDetails() {
         className="btn-group"
         style={{ display: "flex", justifyContent: "flex-end" }}
       >
-        <button
+        {!quizList.find((quiz) => quiz._id === quizId)?.published &&
+        ( <button
           type="button"
           className="btn btn-success"
           onClick={() => handlePublish(quizId)}
         >
-          <i className="fa fa-check" /> Published
-        </button>
+          <i className="fa fa-check" /> Publish
+        </button>)
+       }
+       {quizList.find((quiz) => quiz._id === quizId)?.published &&
+        ( <button
+          type="button"
+          className="btn btn-danger"
+          onClick={() => handlePublish(quizId)}
+        >
+          <i className="fa-solid fa-x" /> Unpublish
+        </button>)
+       }
         <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz?._id}/Preview`}>
         <button type="button" className="btn btn-light">
           Preview

@@ -76,6 +76,11 @@ function QuizQuestionsEditor() {
     setQuestion({ ...question, options: updatedOptions });
   };
 
+  const handleUpdateCorrectAnswer = (index: number) => {
+    const newAns = question?.options[index]
+    setQuestion({ ...question, answer: [newAns]});
+  };
+
   const handleEditAnswer = (index: number) => {
     setEditingIndex(index);
   };
@@ -94,8 +99,9 @@ function QuizQuestionsEditor() {
 
 
   return (
-
+    
     <>
+   
       <h1>Quiz Questions</h1>
       <input
         type="text"
@@ -186,6 +192,7 @@ function QuizQuestionsEditor() {
         
         <> 
       {/* This is the correct answer component*/}
+      {console.log()}
       <div style={{ display: "flex", alignItems: "center" }}>
         <i className="fa-solid fa-arrow-right green-arrow"></i>
         <h6 style={{ margin: "0 10px" }}>Correct Answer:</h6>
@@ -238,8 +245,8 @@ function QuizQuestionsEditor() {
                   <FaPencilAlt />
                 </button>
               </div>
-              <button className="red-outline" style={{ marginRight: "10px" }}>
-                <i className="fa-solid fa-ellipsis"></i>
+              <button onClick={() => handleUpdateCorrectAnswer(index)} className="red-outline" style={{ marginRight: "10px" }}>
+                Change this to correct answer
               </button>
             </div>
           ))}
@@ -320,8 +327,8 @@ function QuizQuestionsEditor() {
                   <FaPencilAlt />
                 </button>
               </div>
-              <button className="red-outline" style={{ marginRight: "10px" }}>
-                <i className="fa-solid fa-ellipsis"></i>
+              <button onClick={() => handleUpdateCorrectAnswer(index)} className="red-outline" style={{ marginRight: "10px" }}>
+                Change this to correct answer
               </button>
             </div>
           ))}
