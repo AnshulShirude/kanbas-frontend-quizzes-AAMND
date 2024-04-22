@@ -14,6 +14,7 @@ import { KanbasState } from "../../store";
 import { findQuizzesForCourse } from "./client";
 import { publishQuiz } from "./reducer";
 import { format, set } from "date-fns";
+import { findQuestionsForQuiz } from "./Questions/client";
 
 function QuizListScreen() {
   const [openPopupId, setOpenPopupId] = useState<string | null>(null);
@@ -90,6 +91,48 @@ function QuizListScreen() {
       return `Not available until ${formatDate(quiz.availableDate)}`;
     }
   };
+  // If the keys are the _id of the quiz and the values are number of questions
+type QuestionCounts = {
+  [key: string]: number; // Assuming the key is _id which is a string
+};
+
+
+
+  const [questionCounts , setQuestionCounts] = useState<QuestionCounts>({}); // State to store question counts
+  // Add a new state to store the total points for each quiz
+  const [quizPoints, setQuizPoints] = useState<{ [quizId: string]: number }>({});
+
+  useEffect(() => {
+    async function fetchQuizzesAndQuestions(courseId : string) {
+      try {
+        const quizzes = await findQuizzesForCourse(courseId);
+        dispatch(setQuizzes(quizzes));
+            
+
+          // Initialize counts with the correct type
+      const counts: QuestionCounts = {};
+      const points: { [quizId: string]: number } = {};
+
+        for (const quiz  of quizzes) {
+          const questions = await findQuestionsForQuiz(quiz._id);
+          counts[quiz._id] = questions.length;
+
+          points[quiz._id] = questions.reduce((acc : any, question : any) => acc + (+question.points || 0), 0);
+        }
+        setQuestionCounts(counts);
+
+        setQuizPoints(points);
+      } catch (error) {
+        console.error('Error fetching quizzes and questions:', error);
+      }
+    }
+
+    if (courseId) {
+      fetchQuizzesAndQuestions(courseId);
+    }
+  }, [courseId, dispatch]);
+
+
 
   return (
     <>
@@ -152,7 +195,7 @@ function QuizListScreen() {
                     Due {format(
                       new Date(quiz.dueDate),
                       "MMM d 'at' h:mma"
-                    )} | {quiz.points} pts | 6 Questions
+                    )} | {quizPoints[quiz._id] || 0} pts | {questionCounts[quiz._id] || 0} Questions
                   </span>
                 </Link>
 
