@@ -32,6 +32,8 @@ function QuizPreview() {
         if (questionList.length > 0) {
           setQuestionList(questionList);
           setQuestion(questionList[0]);
+        } else {
+          setQuestionList([]);
         }
       })
       .catch((error) => {
@@ -50,12 +52,24 @@ function QuizPreview() {
   }, [quizId]);
 
   const handleNextQuestion = () => {
+    if (!Array.isArray(questionList)) {
+      console.error('questionList is not an array');
+      return;
+    }
+
+    if (questionList.length=== 0) {
+      console.error('questionList is empty');
+      return;
+    }
+
     const currentIndex = questionList.findIndex(
       (q: any) => q._id === question?._id
     );
-    if (currentIndex !== -1 && currentIndex < questionList.length - 1) {
+
+    if (currentIndex >= 0 && currentIndex < questionList.length - 1) {
       setQuestion(questionList[currentIndex + 1]);
     }
+  
   };
 
   const handleSubmitQuiz = () => {
@@ -196,21 +210,16 @@ function QuizPreview() {
       </div>
 
       <h3>Questions</h3>
-      <ul>
-        <li>
-          <IoIosHelpCircleOutline />
-          Question 1
-        </li>
-        <li>
-          {" "}
-          <IoIosHelpCircleOutline />
-          Question 2
-        </li>
-        <li>
-          <IoIosHelpCircleOutline />
-          Question 3
-        </li>
-      </ul>
+      {questionList && questionList.length > 0 ? (
+        <ul>
+          {questionList.map((q : any, index : any) => (
+            <li key={q._id}>
+              <IoIosHelpCircleOutline />
+              {`Question ${index + 1}`}
+            </li>
+          ))}
+        </ul>
+      ) : null}
     </>
   );
 }

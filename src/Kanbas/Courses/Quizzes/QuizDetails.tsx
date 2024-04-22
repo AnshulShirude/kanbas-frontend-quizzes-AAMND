@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setQuizzes } from "./reducer";
 import { KanbasState } from "../../store";
@@ -7,6 +7,7 @@ import { findQuizzesForCourse } from "./client";
 import { FaEllipsisV } from "react-icons/fa";
 import * as client from "./client";
 import { publishQuiz } from "./reducer";
+import { findQuestionsForQuiz } from "./Questions/client";
 
 function QuizDetails() {
   const dispatch = useDispatch();
@@ -17,6 +18,18 @@ function QuizDetails() {
       dispatch(setQuizzes(quizzes))
     );
   }, [courseId]);
+
+  const [totalPoints, setTotalPoints] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (quizId) {
+      findQuestionsForQuiz(quizId).then((questions) => {
+        // Assuming each question has a 'points' property
+        const total = questions.reduce((acc : any, question: any) => acc +  (+question.points || 0), 0);
+        setTotalPoints(total);
+      });
+    }
+  }, [quizId]);
 
   const quizList = useSelector(
     (state: KanbasState) => state.quizzesReducer.quizzes
@@ -94,7 +107,7 @@ function QuizDetails() {
           </li>
           <li>
             <strong>Points: </strong>
-            {quiz?.points}
+            {totalPoints !== null ? totalPoints : 0}
           </li>
           <li>
             <strong>Assignment Group: </strong>
