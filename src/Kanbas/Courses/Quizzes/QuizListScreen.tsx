@@ -201,13 +201,24 @@ type QuestionCounts = {
 
                 {openPopupId === quiz._id && (
                   <div className="btn-group">
-                    <button
-                      type="button"
-                      className="btn btn-success"
-                      onClick={() => handlePublish(quiz._id)}
-                    >
-                      <i className="fa fa-check" /> Published
-                    </button>
+                    {!quizList.find((quiz1) => quiz1._id === quiz._id)?.published &&
+                      ( <button
+                        type="button"
+                        className="btn btn-success"
+                        onClick={() => handlePublish(quiz._id)}
+                      >
+                        <i className="fa fa-check" /> Publish
+                      </button>)
+                    }
+                    {quizList.find((quiz1) => quiz1._id === quiz._id)?.published &&
+                      ( <button
+                        type="button"
+                        className="btn btn-danger"
+                        onClick={() => handlePublish(quiz._id)}
+                      >
+                        <i className="fa-solid fa-x" /> Unpublish
+                      </button>)
+                    }
                     <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz?._id}/Preview`}>
                     <button type="button" className="btn btn-light">
                       Preview
