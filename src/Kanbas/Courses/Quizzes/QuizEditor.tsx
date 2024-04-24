@@ -156,6 +156,14 @@ const QuizEditor = () => {
                 <option value="Ungraded Survey">Ungraded Survey</option>
               </select>
 
+              <label>Points: </label>
+              <input
+                type="number"
+                className="form-control"
+                placeholder="Points"
+                value={3}
+              />
+
               <label>Assignment Group: </label>
               <select
                 className="form-control"
